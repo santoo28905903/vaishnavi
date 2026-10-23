@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uae-job-autopilot"
-version = "0.3.0"
-description = "UAE AI Job Autopilot — discovery, matching, documents, Sheets, Gmail"
+version = "0.4.0"
+description = "UAE AI Job Autopilot — discovery through cloud daily pipeline"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -25,6 +25,7 @@ dependencies = [
   "gspread>=6.0",
   "google-auth>=2.0",
   "google-api-python-client>=2.0",
+  "psycopg[binary]>=3.1",
 ]
 
 [project.optional-dependencies]

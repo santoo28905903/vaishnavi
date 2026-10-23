@@ -76,6 +76,33 @@ class ModelCostRecord(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
 
 
+class RunLockRecord(Base):
+    """Named concurrency lock for cloud pipeline runs."""
+
+    __tablename__ = "run_locks"
+
+    name: Mapped[str] = mapped_column(String(128), primary_key=True)
+    owner: Mapped[str] = mapped_column(String(128), nullable=False)
+    acquired_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    meta_json: Mapped[str] = mapped_column(Text, default="{}")
+
+
+class CheckpointRecord(Base):
+    """Resumable stage checkpoints for a pipeline run_id."""
+
+    __tablename__ = "run_checkpoints"
+    __table_args__ = (UniqueConstraint("run_id", "stage", name="uq_run_stage"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    run_id: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
+    stage: Mapped[str] = mapped_column(String(64), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False)  # pending|running|done|failed|skipped
+    payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
 def make_engine(database_url: str):
     connect_args = {"check_same_thread": False} if database_url.startswith("sqlite") else {}
     return create_engine(database_url, future=True, connect_args=connect_args)

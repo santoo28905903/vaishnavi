@@ -2,67 +2,40 @@
 
 Last updated: 24 Oct 2026, Asia/Kolkata.
 
-## Phase 0 — Plan
+## Phase 0–3
 
 - [x] Complete
 
-## Phase 1 — Discovery
+## Phase 4 — Cloud deployment
 
-- [x] Complete
+- [x] GitHub Actions schedule `0 10 * * *` + `timezone: Asia/Kolkata`
+- [x] `workflow_dispatch` (dry_run / resume_run_id inputs)
+- [x] Persistent DB policy — reject SQLite in cloud; Postgres via `DATABASE_URL`
+- [x] Secrets documented (`docs/SECRETS.md`)
+- [x] Concurrency locks (`run_locks`) + Actions `concurrency` group
+- [x] Stage checkpoints (`run_checkpoints`) for resumable runs
+- [x] Retries (tenacity) on discover/evaluate/prepare_docs
+- [x] Daily cost cap (`DAILY_COST_CAP_USD`)
+- [x] Cloud model routing — Ollama forced off; Groq/Gemini optional
+- [x] Source health + failures included in daily email report stage
+- [x] Live submission remains disabled
+- [x] Tests + evidence; **stop before Phase 5**
 
-## Phase 2 — Matching & models
+### Modules
 
-- [x] Complete
+- `ops/{cloud_db,locks,checkpoints,cost_guard,daily_pipeline}.py`
+- CLI: `uae-jobs daily`
+- Workflow: `.github/workflows/uae-job-autopilot-daily.yml`
 
-## Phase 3 — Documents, tracking, reporting
-
-- [x] Verified editable master resume from PDF (`data/resume/master_resume.json`)
-- [x] Truthful role-tailored resume + cover letter (deterministic + optional Groq/Gemini)
-- [x] ATS-friendly PDF render + reparse; 40/60 ATS score; threshold **80**
-- [x] Factual integrity checks (reject fabricated employers/degrees/metrics)
-- [x] SQLite persistence + Alembic migration; idempotent `application_key` upserts
-- [x] Google Sheets tabs (Dashboard, Applications, TodayJobs, RejectedJobs, RunHistory, SourceHealth, ModelCosts, RecruiterOutreach) with error recovery
-- [x] Gmail daily report (zero jobs vs discovery unavailable) with send recovery
-- [x] Tests + evidence; **stop before Phase 4 / submission**
-
-### Implemented modules
-
-- `documents/{master,integrity,pdf_render,ats,generator,pipeline}.py`
-- `db/{tables,repository}.py` + `alembic/`
-- `tracking/sheets.py`
-- `reporting/gmail.py`
-- CLI: `uae-jobs build-master` / `uae-jobs prepare-docs`
-
-### Test results (executed)
+### Tests (executed)
 
 ```text
-26 passed, 5 deselected (-m 'not live')
+33 passed, 5 deselected (-m 'not live')
 ```
 
-See `docs/evidence/phase3_pytest.txt`.
+### Manual Actions invocation
 
-### External integrations
-
-| Integration | Evidence run status |
-|-------------|---------------------|
-| Generative (Groq/Gemini/Ollama) | Not enabled — deterministic tailor used; generative path is optional |
-| Google Sheets | In-memory client (no `SHEETS_ENABLED` / credentials) — sync API tested; live Sheets skipped |
-| Gmail | In-memory client — daily report sent in-process; live Gmail skipped without credentials |
-| SQLite | Local DB upserts verified |
-
-### Prepare-docs evidence
-
-`docs/evidence/phase3_prepare_summary.json`:
-
-- documents_generated: 1
-- ats_pass: 1 (score 100)
-- integrity_ok: true
-- email_status: sent (in-memory)
-- sheets_ok: true (in-memory workbook tabs)
-
-## Phase 4 — GitHub Actions & cloud ops
-
-- [ ] Not started
+Attempted via `gh workflow run` after push (see evidence). Requires `DATABASE_URL` secret for non-dry production runs; dry_run can validate workflow wiring.
 
 ## Phase 5 — Authorized apply
 

@@ -45,6 +45,14 @@ class Settings(BaseSettings):
     sheets_enabled: bool = False
     gmail_enabled: bool = False
 
+    # Phase 4 — cloud ops
+    daily_cost_cap_usd: float = 2.0
+    lock_name: str = "uae_job_autopilot_daily"
+    lock_ttl_seconds: int = 7200
+    allow_sqlite_in_cloud: bool = False
+    pipeline_stages: str = "discover,evaluate,prepare_docs,report"
+    enable_live_submission: bool = False  # Phase 5 — must stay false
+
 
 class ModelsConfig(BaseModel):
     jev_endpoint: str = "https://api.typesafe.ai/v1/systemone"

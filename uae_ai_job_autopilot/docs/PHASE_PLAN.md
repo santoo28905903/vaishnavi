@@ -281,13 +281,13 @@ Status legend: **Planned** = design-ready; **Blocked** = needs credential or aut
 
 ### Phase 4 — Cloud deployment
 
-- [ ] GitHub Actions: cron `0 4 * * *` UTC ≈ 10:00 Asia/Kolkata (+ IST offset handling / `cron` with timezone if available)
-- [ ] `workflow_dispatch` manual run
-- [ ] PostgreSQL for cloud; secrets via GitHub Secrets
-- [ ] Retries, concurrency lock, resumable run state, cost ceilings
-- [ ] Monitoring + failure surfacing in email/Sheets
-- [ ] Document required secrets; dry-run in CI without leaking secrets
-- [ ] Update docs; **stop**
+- [x] GitHub Actions: cron `0 10 * * *` with `timezone: Asia/Kolkata`
+- [x] `workflow_dispatch` manual run
+- [x] PostgreSQL for cloud; secrets via GitHub Secrets
+- [x] Retries, concurrency lock, resumable run state, cost ceilings
+- [x] Monitoring + failure surfacing in email/Sheets
+- [x] Document required secrets; dry-run in CI without leaking secrets
+- [x] Update docs; **stop**
 
 ### Phase 5 — Authorized apply
 

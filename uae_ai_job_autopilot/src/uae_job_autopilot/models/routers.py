@@ -39,8 +39,16 @@ class GenerativeRouter:
             self._client.close()
 
     def available_providers(self) -> list[str]:
+        from uae_job_autopilot.ops.cloud_db import is_cloud_environment
+
         out: list[str] = []
-        if self.models.ollama_enabled and self.settings.ollama_enabled:
+        # Never depend on local Ollama in cloud / GitHub Actions.
+        ollama_ok = (
+            self.models.ollama_enabled
+            and self.settings.ollama_enabled
+            and not is_cloud_environment(self.settings)
+        )
+        if ollama_ok:
             out.append("ollama")
         if self.models.groq_enabled and self.settings.groq_api_key and self.settings.enable_cloud_generative:
             out.append("groq")

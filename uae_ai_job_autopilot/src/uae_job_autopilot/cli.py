@@ -66,6 +66,16 @@ def build_parser() -> argparse.ArgumentParser:
     prep.add_argument("--no-sheets", action="store_true")
     prep.add_argument("--json", action="store_true")
     prep.add_argument("--summary-only", action="store_true")
+
+    daily = sub.add_parser(
+        "daily",
+        help="Phase 4: full daily pipeline (discover→evaluate→docs→report) with locks/checkpoints",
+    )
+    daily.add_argument("--dry-run", action="store_true")
+    daily.add_argument("--resume-run-id", type=str, default=None)
+    daily.add_argument("--skip-lock", action="store_true")
+    daily.add_argument("--json", action="store_true")
+    daily.add_argument("--summary-only", action="store_true")
     return parser
 
 
@@ -319,6 +329,40 @@ def main(argv: list[str] | None = None) -> int:
                     f"{d.resume_pdf}"
                 )
         return 0
+
+    if args.command == "daily":
+        from uae_job_autopilot.ops.daily_pipeline import DailyPipeline
+
+        pipeline = DailyPipeline(settings=settings)
+        result = pipeline.run(
+            dry_run=bool(args.dry_run),
+            resume_run_id=args.resume_run_id or None,
+            skip_lock=bool(args.skip_lock),
+        )
+        payload = result.to_dict()
+        if args.summary_only:
+            print(
+                json.dumps(
+                    {
+                        "run_id": result.run_id,
+                        "ok": result.ok,
+                        "cost_usd": result.cost_usd,
+                        "stages": {k: v.get("status") for k, v in result.stages.items()},
+                        "failures": result.failures,
+                        "notes": result.notes,
+                        "submission_enabled": result.submission_enabled,
+                        "skipped_due_to_lock": result.skipped_due_to_lock,
+                    },
+                    indent=2,
+                )
+            )
+        elif args.json:
+            print(json.dumps(payload, indent=2))
+        else:
+            console = Console()
+            console.print(f"[bold]Daily[/bold] {result.run_id} ok={result.ok}")
+            console.print(json.dumps(payload, indent=2)[:4000])
+        return 0 if result.ok or result.skipped_due_to_lock or args.dry_run else 1
 
     return 1
 
