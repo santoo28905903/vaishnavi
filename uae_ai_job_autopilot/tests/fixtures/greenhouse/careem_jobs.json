@@ -1,0 +1,31 @@
+{
+  "jobs": [
+    {
+      "absolute_url": "https://boards.greenhouse.io/careem/jobs/1",
+      "company_name": "Careem",
+      "first_published": "2026-10-24T06:00:00+00:00",
+      "id": 1,
+      "location": {"name": "Dubai, United Arab Emirates"},
+      "title": "Senior Machine Learning Engineer",
+      "updated_at": "2026-10-24T06:00:00+00:00"
+    },
+    {
+      "absolute_url": "https://boards.greenhouse.io/careem/jobs/2",
+      "company_name": "Careem",
+      "first_published": "2026-09-01T10:00:00+00:00",
+      "id": 2,
+      "location": {"name": "Dubai, United Arab Emirates"},
+      "title": "Account Manager",
+      "updated_at": "2026-09-01T10:00:00+00:00"
+    },
+    {
+      "absolute_url": "https://boards.greenhouse.io/careem/jobs/3",
+      "company_name": "Careem",
+      "first_published": "2026-10-24T06:00:00+00:00",
+      "id": 3,
+      "location": {"name": "Karachi, Pakistan"},
+      "title": "AI Engineer",
+      "updated_at": "2026-10-24T06:00:00+00:00"
+    }
+  ]
+}

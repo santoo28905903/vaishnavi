@@ -1,0 +1,41 @@
+# Factual candidate profile — must stay aligned with the resume PDF.
+# Do not invent skills, employers, dates, or certifications.
+
+full_name: Vaishnavi Santoshi Batchu
+email: vaishnavibatchu28@gmail.com
+phone: "+91 8500915151"
+linkedin: https://www.linkedin.com/in/vaishnavi-santoshi-443527244/
+current_location:
+  city: Pune
+  country: India
+  postal_code: "411057"
+
+total_experience_years_approx: 4
+current_role:
+  title: Senior Data Scientist
+  employer: "Relanto (client: Google Marketing team)"
+  start: "2025-01"
+previous_employers:
+  - Searce
+
+resume_pdf: data/resume/Vaishnavi_Santoshi_Batchu_Resume_ATS.pdf
+
+# Preferences (not resume inventions)
+visa:
+  requires_employer_sponsorship: true
+  never_misrepresent_status: true
+relocation:
+  willing: true
+  target_country: United Arab Emirates
+notice_period_days: 30  # subject to candidate confirmation updates
+compensation:
+  currency: AED
+  expected_monthly_min: 25000
+  expected_monthly_max: 30000
+  expected_monthly_default: 28000
+  hard_floor_monthly_max_offer: 20000  # reject if verified max below this
+  unknown_salary_policy: keep_unknown_evaluate_other_rules
+
+truthfulness:
+  never_fabricate_skills_or_history: true
+  never_false_application_answers: true

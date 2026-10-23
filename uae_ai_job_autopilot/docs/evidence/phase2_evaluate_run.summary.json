@@ -1,0 +1,76 @@
+{
+  "run_id": "20261023T195928Z-match-d9e92bfc",
+  "stats": {
+    "jobs_input": 6,
+    "hard_blocked": 4,
+    "resume_pass": 0,
+    "resume_fail": 2,
+    "visa_pass": 1,
+    "visa_fail": 1,
+    "match_pass": 0,
+    "needs_model": 2,
+    "model_errors": 0,
+    "total_cost_usd": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0
+  },
+  "jev_configured": false,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "passes": [],
+  "blocked_or_rejected": [
+    {
+      "title": "Senior Generative AI Engineer",
+      "decision": "needs_model",
+      "hard": [],
+      "resume": 81.96,
+      "visa": 95.0
+    },
+    {
+      "title": "Associate Data Scientist - Builders Program - (Emirati National)",
+      "decision": "blocked",
+      "hard": [
+        "emirati_nationals_only"
+      ],
+      "resume": null,
+      "visa": 0.0
+    },
+    {
+      "title": "Machine Learning Engineer",
+      "decision": "blocked",
+      "hard": [
+        "no_visa_sponsorship"
+      ],
+      "resume": null,
+      "visa": 5.0
+    },
+    {
+      "title": "AI Engineer",
+      "decision": "blocked",
+      "hard": [
+        "salary_below_floor"
+      ],
+      "resume": null,
+      "visa": 40.0
+    },
+    {
+      "title": "LLM / RAG Engineer",
+      "decision": "needs_model",
+      "hard": [],
+      "resume": 72.84,
+      "visa": 40.0
+    },
+    {
+      "title": "Principal Machine Learning Engineer",
+      "decision": "blocked",
+      "hard": [
+        "experience_gap"
+      ],
+      "resume": null,
+      "visa": 90.0
+    }
+  ],
+  "notes": [
+    "TYPESAFE_API_KEY missing \u2014 Jev decisions unavailable; hard rules + embeddings still applied"
+  ],
+  "total_cost_usd": 0.0
+}
