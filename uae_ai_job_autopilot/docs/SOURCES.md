@@ -1,33 +1,17 @@
-# Source capability matrix (planning)
+# Source capability matrix (Phase 1)
 
-Adapters are only marked **enabled** after a Phase 1+ implementation runs successfully. Until then all rows are **planned**.
+| Source | Access mode | Adapter | Live status in evidence run |
+|--------|-------------|---------|-----------------------------|
+| Greenhouse | Public ATS API | `GreenhouseAdapter` | Queried successfully |
+| Lever | Public ATS API | `LeverAdapter` | Queried successfully (0 UAE AI/ML) |
+| Ashby | Public ATS API | `AshbyAdapter` | Queried successfully |
+| JSearch | Licensed RapidAPI | `JSearchAdapter` | **Not searched** — missing `JSEARCH_API_KEY` |
+| LinkedIn Jobs | Alert JSON only | `AlertIngestionAdapter` | **Not searched** — empty `data/alerts/linkedin_jobs/` |
+| NaukriGulf | Alert JSON only | `AlertIngestionAdapter` | **Not searched** — empty alert dir |
+| Indeed UAE | Alert JSON only | `AlertIngestionAdapter` | **Not searched** — empty alert dir |
+| Bayt | Alert JSON only | `AlertIngestionAdapter` | **Not searched** — empty alert dir |
+| GulfTalent | Alert JSON only | `AlertIngestionAdapter` | **Not searched** — empty alert dir |
+| Michael Page | Alert JSON only | `AlertIngestionAdapter` | **Not searched** — empty alert dir |
+| Jooble / SmartRecruiters / Workday / Oracle / SAP / other recruiters | — | none yet | Disabled / planned — not searched |
 
-| Source | Category | Planned access | Phase 1 target | Status |
-|--------|----------|----------------|----------------|--------|
-| JSearch | Aggregator API | RapidAPI | Implement if key | planned |
-| Jooble | Aggregator API | Jooble API | Implement if key | planned |
-| Greenhouse | ATS public board | JSON boards | Implement (public) | planned |
-| Lever | ATS public postings | JSON | Implement (public) | planned |
-| Ashby | ATS public board | JSON | Implement (public) | planned |
-| SmartRecruiters | ATS | Public ads API where available | Probe | planned |
-| Workday | ATS | Official feed only | Conditional | planned / often unsupported |
-| Oracle Recruiting | ATS | Official feed only | Conditional | planned / often unsupported |
-| SAP SuccessFactors | ATS | Official feed only | Conditional | planned / often unsupported |
-| NaukriGulf | Board | Authorized API or alerts only | Health stub if no API | planned |
-| LinkedIn Jobs | Board | Alerts/export; no scrape | Health stub | planned |
-| Indeed UAE | Board | Authorized path only | Health stub | planned |
-| Bayt | Board | Authorized path only | Health stub | planned |
-| GulfTalent | Board | Authorized path only | Health stub | planned |
-| Foundit Gulf | Board | Authorized path only | Health stub | planned |
-| Michael Page UAE | Recruiter | Permitted feed/search | Conditional | planned |
-| Hays UAE | Recruiter | Permitted feed/search | Conditional | planned |
-| Robert Half | Recruiter | Permitted feed/search | Conditional | planned |
-| TASC Outsourcing | Recruiter | Permitted feed/search | Conditional | planned |
-| Charterhouse ME | Recruiter | Permitted feed/search | Conditional | planned |
-| Discovered MENA | Recruiter | Permitted feed/search | Conditional | planned |
-| Kingston Stanley | Recruiter | Permitted feed/search | Conditional | planned |
-| Salt | Recruiter | Permitted feed/search | Conditional | planned |
-| Cooper Fitch | Recruiter | Permitted feed/search | Conditional | planned |
-| Priority employers | Career pages / ATS | Prefer Greenhouse/Lever/Ashby | Board ID registry | planned |
-
-**Rule:** Never report a source as queried unless its adapter completed a successful or explicitly failed attempt that is logged in SourceHealth.
+**Rule:** Never report a source as queried unless its adapter completed an attempted run that is logged in SourceHealth.

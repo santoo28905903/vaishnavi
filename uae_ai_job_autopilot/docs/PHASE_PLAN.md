@@ -1,7 +1,7 @@
 # UAE AI Job Autopilot — Phase 0 Plan
 
 Prepared after inspecting the repository and the verified resume PDF.  
-**No Phase 1–5 application code is implemented in this deliverable.**
+Phase 0 planning is complete. **Phase 1 discovery code is implemented** (see `docs/PROGRESS.md`). Phases 2–5 are not started.
 
 ---
 
@@ -243,18 +243,18 @@ Status legend: **Planned** = design-ready; **Blocked** = needs credential or aut
 
 ### Phase 1 — Discovery foundation
 
-- [ ] Scaffold Python package (`pyproject.toml`, CLI stubs, logging, settings)
-- [ ] Domain models: `JobPosting`, provenance, publication vs discovery time, freshness flags
-- [ ] `SourceAdapter` protocol + registry + orchestrator
-- [ ] At least 2–3 **working** adapters with real or mocked-but-honest failure paths (prefer JSearch/Jooble + Greenhouse/Lever/Ashby public boards)
-- [ ] Register remaining sources as `not_configured` / `unsupported` with health reporting (never claim searched)
-- [ ] Normalization (title, employer, location UAE, salary parse to AED when present)
-- [ ] Deduplication (job ID, URL, employer+title+location fingerprint)
-- [ ] Rolling 24h freshness window; cap 50 verified-fresh unique jobs for evaluation handoff
-- [ ] Persist counts: discovered / fresh / excluded / duplicates
-- [ ] Source-health report artifact
-- [ ] Unit + integration tests with recorded fixtures; document which live APIs were actually called
-- [ ] Update README + PROGRESS; **stop**
+- [x] Scaffold Python package (`pyproject.toml`, CLI stubs, logging, settings)
+- [x] Domain models: `JobPosting`, provenance, publication vs discovery time, freshness flags
+- [x] `SourceAdapter` protocol + registry + orchestrator
+- [x] Working adapters: Greenhouse, Lever, Ashby, JSearch (+ alert ingestion for board/recruiter sources)
+- [x] Register remaining sources as `not_configured` / `unsupported` / disabled with health reporting (never claim searched)
+- [x] Normalization (title, employer, location UAE, salary parse to AED when present)
+- [x] Deduplication (job ID, URL, employer+title+location fingerprint)
+- [x] Rolling 24h freshness window; cap 50 verified-fresh unique jobs for evaluation handoff
+- [x] Persist counts: discovered / fresh / excluded / duplicates
+- [x] Source-health report artifact
+- [x] Unit + integration tests with recorded fixtures; document which live APIs were actually called
+- [x] Update README + PROGRESS; **stop**
 
 ### Phase 2 — Matching & models
 

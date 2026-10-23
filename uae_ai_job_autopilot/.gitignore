@@ -12,9 +12,12 @@ dist/
 build/
 *.egg-info/
 data/cache/
+data/runs/
 data/*.db
 data/*.sqlite
 *.log
+.venv/
+venv/
 .DS_Store
 credentials/
 *-service-account.json

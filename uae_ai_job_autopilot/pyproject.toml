@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uae-job-autopilot"
+version = "0.1.0"
+description = "UAE AI Job Autopilot — Phase 1 multi-source discovery"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "httpx>=0.27",
+  "pydantic>=2.0",
+  "pydantic-settings>=2.0",
+  "PyYAML>=6.0",
+  "tenacity>=8.0",
+  "python-dateutil>=2.9",
+  "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.23",
+  "respx>=0.21",
+]
+
+[project.scripts]
+uae-jobs = "uae_job_autopilot.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+markers = [
+  "live: hits real external APIs (skipped without network/credentials)",
+]
+testpaths = ["tests"]
+pythonpath = ["src"]

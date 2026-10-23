@@ -1,5 +1,6 @@
-# Source registry — Phase 1 will flip statuses based on real adapter runs.
-# enabled: false means the orchestrator must NOT claim the source was searched.
+# Phase 1 source registry.
+# enabled=true means the adapter may run. Attempted vs not-searched is still
+# reported honestly in SourceHealth (e.g. missing API key or empty alert dir).
 
 defaults:
   timeout_seconds: 30
@@ -7,9 +8,10 @@ defaults:
 
 aggregators:
   jsearch:
-    enabled: false
+    enabled: true
     requires_env: JSEARCH_API_KEY
-    status: planned
+    status: implemented
+    detail: RapidAPI JSearch — skipped when JSEARCH_API_KEY is absent
   jooble:
     enabled: false
     requires_env: JOOBLE_API_KEY
@@ -17,14 +19,29 @@ aggregators:
 
 ats_public:
   greenhouse:
-    enabled: false
-    status: planned
+    enabled: true
+    status: implemented
+    # Public board tokens verified reachable during Phase 1 setup.
+    boards:
+      - careem
+      - tamara
+      - binance
+      - bybit
+      - coinbase
+      - elastic
+      - mongodb
+      - scaleai
   lever:
-    enabled: false
-    status: planned
+    enabled: true
+    status: implemented
+    sites:
+      - palantir
+      - spotify
   ashby:
-    enabled: false
-    status: planned
+    enabled: true
+    status: implemented
+    boards:
+      - openai
   smartrecruiters:
     enabled: false
     status: planned
@@ -39,29 +56,42 @@ ats_public:
     status: planned_conditional
 
 job_boards:
+  # No authorized live search API — alert JSON ingestion only.
   naukrigulf:
-    enabled: false
-    status: planned_authorized_path_only
+    enabled: true
+    status: alert_ingestion
+    alert_dir: data/alerts/naukrigulf
+    detail: No scraping; place job-alert JSON exports in data/alerts/naukrigulf/
   linkedin_jobs:
-    enabled: false
-    status: planned_alerts_or_licensed_only
+    enabled: true
+    status: alert_ingestion
+    alert_dir: data/alerts/linkedin_jobs
+    detail: No LinkedIn scrape; alert/export JSON ingestion only
   indeed_uae:
-    enabled: false
-    status: planned_authorized_path_only
+    enabled: true
+    status: alert_ingestion
+    alert_dir: data/alerts/indeed_uae
+    detail: No Indeed scrape; alert JSON ingestion only
   bayt:
-    enabled: false
-    status: planned_authorized_path_only
+    enabled: true
+    status: alert_ingestion
+    alert_dir: data/alerts/bayt
+    detail: No Bayt scrape; alert JSON ingestion only
   gulftalent:
-    enabled: false
-    status: planned_authorized_path_only
+    enabled: true
+    status: alert_ingestion
+    alert_dir: data/alerts/gulftalent
+    detail: No GulfTalent scrape; alert JSON ingestion only
   foundit_gulf:
     enabled: false
     status: planned_authorized_path_only
 
 recruiters:
-  michael_page_uae:
-    enabled: false
-    status: planned
+  michael_page:
+    enabled: true
+    status: alert_ingestion
+    alert_dir: data/alerts/michael_page
+    detail: Michael Page UAE — alert/export JSON only; no HTML scrape
   hays_uae:
     enabled: false
     status: planned
