@@ -1,0 +1,100 @@
+{
+  "full_name": "Vaishnavi Santoshi Batchu",
+  "email": "vaishnavibatchu28@gmail.com",
+  "phone": "+91 8500915151",
+  "linkedin": "https://www.linkedin.com/in/vaishnavi-santoshi-443527244/",
+  "location": "Pune, India",
+  "headline": "Senior Data Scientist | Generative AI & Agentic AI Engineer | LLMs · RAG · Multi-Agent Systems · AI Backend Engineering",
+  "summary": "VAISHNAVI  SANTOSHI  BATCHU Senior  Data  Scientist  |  Generative  AI  &  Agentic  AI  Engineer  |  LLMs  ·  RAG  ·  Multi-Agent  Systems  ·  AI  Backend  Engineering Pune,  Maharashtra  411057   •   +91  8500915151   •   vaishnavibatchu28@gmail.com   •   linkedin.com/in/vaishnavi-santoshi-443527244 PROFESSIONAL  SUMMARY Senior  Data  Scientist  and  Generative  AI  /  Agentic  AI  Engineer  with  4+  years  designing,  deploying,  and  scaling  production-grade  AI systems across Generative AI, document",
+  "skills": [
+    "Python",
+    "SQL",
+    "LangGraph",
+    "LangChain",
+    "MCP",
+    "RAG",
+    "LLMs",
+    "FastAPI",
+    "Flask",
+    "Docker",
+    "BigQuery",
+    "AWS",
+    "Bedrock",
+    "MLOps",
+    "NLP",
+    "PyTorch",
+    "TensorFlow",
+    "GCP"
+  ],
+  "experience": [
+    {
+      "employer": "Google (via Relanto)",
+      "title": "Senior Data Scientist",
+      "start": "Jan 2025",
+      "end": "Present",
+      "location": "Pune, Maharashtra",
+      "bullets": [
+        "Senior  Data  Scientist  and  Generative  AI  /  Agentic  AI  Engineer  with  4+  years  designing,  deploying,  and  scaling  production-grade  AI",
+        "Data  Science  •  Machine  Learning  •  Artificial  Intelligence  (AI)  •  Generative  AI  (GenAI)  •  Large  Language  Models  (LLMs)  •",
+        "Languages:  Python  (Advanced),  SQL  (Advanced) Generative  AI  &  LLMs:  Claude,  Gemini,  PaLM  2,  GPT,  Retrieval-Augmented  Generation  (RAG),  Prompt  Engineering,  LLM  Fine-Tuning,",
+        "Reduced  task-handling  overhead  by  40%+  in  complex  enterprise  processes  by  designing  multi-agent  orchestration  workflows  in",
+        "Cut  information-lookup  time  by  50%  by  building  client-facing  AI  copilots  and  conversational  assistants  —  integrating  Vertex  AI",
+        "Integrated  LLMs  with  5+  enterprise  APIs  and  structured  data  systems  using  LangChain,  Model  Context  Protocol  (MCP),  tool",
+        "Cut  manual  reporting  effort  by  70%  by  engineering  automated  dashboard  and  reporting  agents  that  query  PostgreSQL  databases  directly,  improving  operational  throughput."
+      ]
+    },
+    {
+      "employer": "Searce Inc",
+      "title": "Machine Learning Engineer",
+      "start": "Aug 2023",
+      "end": "Dec 2024",
+      "location": "Pune, Maharashtra",
+      "bullets": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "employer": "Searce Inc",
+      "title": "Analyst ML Engineer",
+      "start": "Jul 2022",
+      "end": "Feb 2023",
+      "location": "Pune, Maharashtra",
+      "bullets": [
+        "Image  Deduplication:  Built  an  embedding-based  image  deduplication  system  that  removed  30%  of  redundant  assets  from  the  content  library,  cutting  downstream  storage  and  processing  costs  by  25%."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech, Data Science & Artificial Intelligence",
+      "institution": "ICFAI, Hyderabad",
+      "years": "2019 – 2023"
+    }
+  ],
+  "certifications": [
+    "Google Cloud – Professional Machine Learning Engineer",
+    "Google Cloud – Professional Data Engineer",
+    "Google Cloud – Associate Cloud Engineer",
+    "Google Cloud – Generative AI Leader",
+    "AWS Certified Machine Learning – Specialty"
+  ],
+  "languages": [
+    "English",
+    "Telugu",
+    "Hindi"
+  ],
+  "source_pdf": "/workspace/uae_ai_job_autopilot/data/resume/Vaishnavi_Santoshi_Batchu_Resume_ATS.pdf",
+  "raw_pdf_text": "VAISHNAVI  SANTOSHI  BATCHU Senior  Data  Scientist  |  Generative  AI  &  Agentic  AI  Engineer  |  LLMs  ·  RAG  ·  Multi-Agent  Systems  ·  AI  Backend  Engineering Pune,  Maharashtra  411057   •   +91  8500915151   •   vaishnavibatchu28@gmail.com   •   linkedin.com/in/vaishnavi-santoshi-443527244 \nPROFESSIONAL  SUMMARY \nSenior  Data  Scientist  and  Generative  AI  /  Agentic  AI  Engineer  with  4+  years  designing,  deploying,  and  scaling  production-grade  AI  \nsystems\n \nacross\n \nGenerative\n \nAI,\n \ndocument\n \nintelligence,\n \ncomputer\n \nvision,\n \nand\n \nAI-first\n \nbackend\n \nservices.\n \nDeep\n \nexpertise\n \nbuilding\n \nLarge\n \nLanguage\n \nModel\n \n(LLM)\n \napplications,\n \nRetrieval-Augmented\n \nGeneration\n \n(RAG)\n \npipelines,\n \nand\n \nmulti-agent\n \norchestration\n \n(LangGraph,\n \nGoogle\n \nADK,\n \nMCP,\n \ntool\n \ncalling)\n \non\n \nGoogle\n \nCloud\n \nPlatform\n \n(GCP)\n \nand\n \nAWS,\n \nintegrated\n \nthrough\n \nproduction\n \nAPIs,\n \nFastAPI/Flask\n \nbackends,\n \nand\n \ncontainerized\n \n(Docker)\n \ndeployments.\n \nExperienced\n \nworking\n \nclient-facing\n \nand\n \ncross-functionally\n \nto\n \ntranslate\n \nenterprise\n \nrequirements\n \ninto\n \ndeployed\n \nAI\n \nsolutions\n \n—\n \nreducing\n \nmanual\n \neffort\n \nby\n \nup\n \nto\n \n85%,\n \nlifting\n \nprocessing\n \naccuracy\n \nto\n \n97-99%,\n \nand\n \ndriving\n \nmeasurable\n \noperational\n \nefficiency\n \nat\n \n99%+\n \nproduction\n \navailability.\n \n5x\n \nGCP-\n \nand\n \nAWS-certified,\n \nwith\n \na\n \nstrong\n \nability\n \nto\n \ntranslate\n \ncomplex\n \nAI/ML\n \nand\n \nAgentic\n \nAI\n \ncapabilities\n \ninto\n \nclear,\n \nactionable\n \noutcomes\n \nfor\n \nenterprise\n \nstakeholders.\n \nCORE  COMPETENCIES \nData  Science  •  Machine  Learning  •  Artificial  Intelligence  (AI)  •  Generative  AI  (GenAI)  •  Large  Language  Models  (LLMs)  •  \nRetrieval-Augmented\n \nGeneration\n \n(RAG)\n \n•\n \nAgentic\n \nAI\n \n&\n \nMulti-Agent\n \nSystems\n \n•\n \nModel\n \nContext\n \nProtocol\n \n(MCP)\n \n•\n \nTool\n \nCalling\n \n/\n \nFunction\n \nCalling\n \n•\n \nPrompt\n \nEngineering\n \n•\n \nNatural\n \nLanguage\n \nProcessing\n \n(NLP)\n \n•\n \nComputer\n \nVision\n \n•\n \nDeep\n \nLearning\n \n•\n \nVector\n \nSearch\n \n&\n \nVector\n \nDatabases\n \n•\n \nAI\n \nBackend\n \n&\n \nAPI\n \nDevelopment\n \n•\n \nMLOps\n \n/\n \nLLMOps\n \n•\n \nModel\n \nDeployment\n \n•\n \nCI/CD\n \n•\n \nCloud\n \nComputing\n \n(GCP\n \n&\n \nAWS)\n \n•\n \nClient-Facing\n \nSolution\n \nDelivery\n \n•\n \nData\n \nAnalysis\n \n•\n \nPredictive\n \nModeling\n \n•\n \nStakeholder\n \nManagement\n \nTECHNICAL  SKILLS \nLanguages:  Python  (Advanced),  SQL  (Advanced) Generative  AI  &  LLMs:  Claude,  Gemini,  PaLM  2,  GPT,  Retrieval-Augmented  Generation  (RAG),  Prompt  Engineering,  LLM  Fine-Tuning,  \nChain-of-Thought\n \nPrompting,\n \nFew-Shot\n \nPrompting\n Agentic  AI  &  Orchestration:  LangGraph,  Google  ADK,  LangChain,  Model  Context  Protocol  (MCP),  Tool  Calling  /  Function  Calling,  \nMulti-Agent\n \nSystems,\n \nAutonomous\n \nTask\n \nExecution,\n \nAdaptive\n \nRouting,\n \nFunction\n \nOrchestration\n Natural  Language  Processing  (NLP):  spaCy,  NLTK,  BERT,  GPT,  Hugging  Face  Transformers,  Semantic  Search Machine  Learning:  CNN,  Transformers,  Regression,  Logistic  Regression,  K-Means,  KNN,  Decision  Tree,  Random  Forest,  Feature  \nEngineering,\n \nModel\n \nTraining\n \n&\n \nEvaluation\n Computer  Vision:  YOLO,  OpenCV,  Image  Segmentation,  Image  Deduplication AI  Backend,  APIs  &  Deployment:  FastAPI,  Flask,  Docker,  Containerization,  REST  API  Integration,  Microservices,  CI/CD  Pipelines,  \nModel\n \nDeployment,\n \nObservability\n \n&\n \nMonitoring\n Google  Cloud  (GCP):  Vertex  AI,  Vertex  AI  Studio,  Document  AI,  Vertex  AI  Vector  Search,  Cloud  Run,  Cloud  Functions,  BigQuery,  Cloud  \nStorage,\n \nGoogle\n \nADK,\n \nGemini\n \nEnterprise,\n \nDiscovery\n \nEngine\n AWS:  Bedrock,  Textract,  Lambda,  S3,  Amazon  Rekognition,  Serverless  Architecture Databases  &  Vector  Search:  PostgreSQL,  MySQL,  BigQuery,  Vector  Databases,  Semantic  /  Vector  Search,  Cosine  Similarity MLOps  /  LLMOps:  CI/CD,  Model  Monitoring  &  Logging,  Containerization,  Vector  Database  Pipelines,  Production  Deployment Frameworks:  PyTorch,  TensorFlow,  Keras,  Scikit-learn \nWORK  EXPERIENCE \nGoogle  (via  Relanto) Pune,  Maharashtra Senior  Data  ScientistJan  2025  –  Present \n•\n Led  architecture  and  delivery  of  enterprise-scale  Generative  AI  /  agentic  AI  automation  platforms,  combining  Google  Document  \nAI,\n \nGemini\n \nLLMs,\n \nand\n \nRetrieval-Augmented\n \nGeneration\n \n(RAG)\n \nfor\n \ncontext-aware\n \ndocument\n \nunderstanding\n \nand\n \nprecise\n \nknowledge\n \nretrieval\n \nat\n \nscale.\n \n•\n Reduced  task-handling  overhead  by  40%+  in  complex  enterprise  processes  by  designing  multi-agent  orchestration  workflows  in  \nLangGraph\n \nand\n \nGoogle\n \nADK,\n \nenabling\n \nadaptive\n \nrouting,\n \nautonomous\n \ntask\n \nexecution,\n \nand\n \ndynamic\n \ndecision-making.\n \n•\n Cut  information-lookup  time  by  50%  by  building  client-facing  AI  copilots  and  conversational  assistants  —  integrating  Vertex  AI  \nVector\n \nSearch,\n \nGemini\n \nEnterprise,\n \nGoogle\n \nDocs\n \nAPI,\n \nPostgreSQL,\n \nand\n \nMySQL\n \nfor\n \nsemantic\n \nsearch,\n \nAI-powered\n \nform\n \ncompletion,\n \nand\n \ndocument\n \nquerying.\n \n•\n Integrated  LLMs  with  5+  enterprise  APIs  and  structured  data  systems  using  LangChain,  Model  Context  Protocol  (MCP),  tool  \ncalling,\n \nand\n \nfunction\n \norchestration,\n \nscaling\n \nproduction-grade\n \nGenAI\n \nbackend\n \nservices.\n \n•\n Sustained  99%+  production  availability  by  deploying  cloud-native  AI  applications  on  GCP  Cloud  Run  with  scalable  backend  \narchitectures,\n \nCI/CD\n \npipelines,\n \nand\n \nobservability\n \ntooling.\n \n•\n Cut  manual  reporting  effort  by  70%  by  engineering  automated  dashboard  and  reporting  agents  that  query  PostgreSQL  databases  directly,  improving  operational  throughput. \n•\n Lifted  response  accuracy  and  factual  grounding  by  20%  across  enterprise  AI  applications  by  refining  prompt  engineering  practices,  vector  database  pipelines,  and  semantic  retrieval. \nSearce  Inc Pune,  Maharashtra Machine  Learning  EngineerAug  2023  –  Dec  2024 \n•\n Financial  Document  Analysis:  Built  an  end-to-end  document  processing  pipeline  on  AWS  Bedrock  (Claude  3  Sonnet)  with  custom  adapters  for  varied  formats;  achieved  99.9%  system  uptime  via  a  serverless  AWS  Lambda  architecture  and  cut  manual  processing  time  by  85%. \n•\n Intelligent  Document  Processing:  Led  development  of  a  Document  AI  solution  on  GCP,  delivering  a  95%  reduction  in  processing  time  and  a  60%  improvement  in  process  efficiency  through  robust  extraction  pipelines  with  advanced  error  handling. \n•\n KYC  Processing:  Designed  a  hybrid  ML  architecture  combining  YOLO  and  spaCy  with  a  proprietary  coordinate-mapping  system  for  field-level  text  extraction,  reaching  97%  accuracy  on  identity-document  processing. \n•\n Retail  Analytics:  Built  a  Gemini-powered  product  analysis  system  using  OpenCV  for  image  preprocessing;  drove  a  25%  gain  in  inventory  efficiency  and  contributed  to  15%  sales  growth  through  AI-driven  insights. \n•\n AI-Driven  Looker  Dashboards:  Built  a  RAG  system  using  Vertex  AI  LLMs  and  vector  search  for  autonomous  LookML  code  generation;  fine-tuned  an  LLM  to  90%  accuracy  and  resolved  field-name  mismatches  via  targeted  prompt  engineering,  deployed  on  GCP  with  Cloud  Storage  and  Discovery  Engine. \n•\n Recommendation  Engine:  Built  a  multimodal  recommendation  system  using  cosine-similarity  vector  search  on  Vertex  AI  and  the  PaLM  2  API  for  entity  extraction,  achieving  a  20%  uplift  in  user  engagement. \n•\n Address  Parser:  Enhanced  an  intelligent  address-parsing  system  combining  YOLO  and  the  PaLM  2  API  for  accurate  component  extraction,  delivering  98%  field-level  accuracy  across  varied  formats. \nSearce  Inc Pune,  Maharashtra Analyst  ML  EngineerJul  2022  –  Feb  2023 \n•\n Image  Deduplication:  Built  an  embedding-based  image  deduplication  system  that  removed  30%  of  redundant  assets  from  the  content  library,  cutting  downstream  storage  and  processing  costs  by  25%. \n•\n Document  Information  Extraction:  Expanded  custom  document  information-extraction  models  on  GCP,  improving  extraction  accuracy  by  15%  while  maintaining  production-grade  scalability  and  reliability. \nEDUCATION\n \nB.Tech,  Data  Science  &  Artificial  Intelligence 2019  –  2023 ICFAI,  Hyderabad \nCERTIFICATIONS\n \n•\n Google  Cloud  –  Professional  Machine  Learning  Engineer \n•\n Google  Cloud  –  Professional  Data  Engineer \n•\n Google  Cloud  –  Associate  Cloud  Engineer \n•\n Google  Cloud  –  Generative  AI  Leader \n•\n AWS  Certified  Machine  Learning  –  Specialty \nCOMMUNITY  SERVICE \n•\n Volunteer  Teaching:  Taught  foundational  concepts  to  students  from  underserved  backgrounds. \n•\n Plantation  Drive:  Participated  in  community  tree-plantation  and  environmental  sustainability  initiatives. \n•\n Charity  &  Donations:  Organized  and  collected  donations  to  support  underserved  communities  in  Hyderabad. \nLANGUAGES\n \nEnglish,  Telugu,  Hindi",
+  "version": "1.0"
+}

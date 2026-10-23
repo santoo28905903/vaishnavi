@@ -1,0 +1,17 @@
+Manual GitHub Actions invocation attempt
+Timestamp (UTC): 2026-10-23T20:13Z approximately
+Command:
+  gh workflow run uae-job-autopilot-daily.yml --ref cursor/uae-job-autopilot-phase4-3c40 -f dry_run=true
+
+Result:
+  HTTP 404: workflow uae-job-autopilot-daily.yml not found on the default branch
+
+Interpretation:
+  GitHub only registers workflow_dispatch / schedule for workflow files present on the
+  repository default branch (main). The workflow is implemented and pushed on
+  cursor/uae-job-autopilot-phase4-3c40. After this PR is merged to main, run:
+
+    gh workflow run uae-job-autopilot-daily.yml -f dry_run=true
+
+  For a full production run, set the DATABASE_URL (Postgres) repository secret first;
+  cloud policy rejects ephemeral SQLite.

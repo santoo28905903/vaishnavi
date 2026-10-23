@@ -1,0 +1,18 @@
+{
+  "run_id": "20261023T201327Z-daily-93f1062f",
+  "ok": true,
+  "cost_usd": 0,
+  "stages": {
+    "discover": "skipped",
+    "evaluate": "skipped",
+    "prepare_docs": "skipped",
+    "report": "skipped"
+  },
+  "failures": [],
+  "notes": [
+    "Local DB URL scheme allowed: sqlite",
+    "dry_run: stages planned only (no live source/model calls)"
+  ],
+  "submission_enabled": false,
+  "skipped_due_to_lock": false
+}

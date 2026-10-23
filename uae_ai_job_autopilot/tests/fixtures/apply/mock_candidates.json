@@ -1,0 +1,75 @@
+{
+  "candidates": [
+    {
+      "scenario": "success",
+      "ats_passed": true,
+      "job": {
+        "source": "mock_sandbox",
+        "source_job_id": "mock-1",
+        "title": "Senior ML Engineer",
+        "employer": "Mock UAE AI Labs",
+        "location_raw": "Dubai, UAE",
+        "locations_normalized": ["Dubai"],
+        "is_uae": true,
+        "application_url": "mock://apply/job-1?scenario=success",
+        "description_text": "Build LLM systems. Visa sponsorship available.",
+        "discovered_at": "2026-10-24T00:00:00+00:00",
+        "fingerprint": "mock-fp-1",
+        "raw_provenance": {"mock_scenario": "success"}
+      }
+    },
+    {
+      "scenario": "captcha",
+      "ats_passed": true,
+      "job": {
+        "source": "mock_sandbox",
+        "source_job_id": "mock-2",
+        "title": "Applied Scientist",
+        "employer": "Mock Captcha Corp",
+        "location_raw": "Abu Dhabi, UAE",
+        "locations_normalized": ["Abu Dhabi"],
+        "is_uae": true,
+        "application_url": "mock://apply/job-2?scenario=captcha",
+        "description_text": "Research role with sponsorship.",
+        "discovered_at": "2026-10-24T00:00:00+00:00",
+        "fingerprint": "mock-fp-2",
+        "raw_provenance": {"mock_scenario": "captcha"}
+      }
+    },
+    {
+      "scenario": "unverified",
+      "ats_passed": true,
+      "job": {
+        "source": "mock_sandbox",
+        "source_job_id": "mock-3",
+        "title": "Generative AI Engineer",
+        "employer": "Mock Unverified Inc",
+        "location_raw": "Dubai, UAE",
+        "locations_normalized": ["Dubai"],
+        "is_uae": true,
+        "application_url": "https://mock.uae-job-autopilot.local/apply/3?scenario=unverified",
+        "description_text": "Agentic AI systems.",
+        "discovered_at": "2026-10-24T00:00:00+00:00",
+        "fingerprint": "mock-fp-3",
+        "raw_provenance": {"mock_scenario": "unverified"}
+      }
+    },
+    {
+      "ats_passed": true,
+      "job": {
+        "source": "linkedin_jobs",
+        "source_job_id": "li-9",
+        "title": "AI Engineer",
+        "employer": "Unsupported Board Co",
+        "location_raw": "Dubai, UAE",
+        "locations_normalized": ["Dubai"],
+        "is_uae": true,
+        "application_url": "https://www.linkedin.com/jobs/view/123",
+        "description_text": "LinkedIn posting — no automated apply.",
+        "discovered_at": "2026-10-24T00:00:00+00:00",
+        "fingerprint": "mock-fp-li",
+        "raw_provenance": {}
+      }
+    }
+  ]
+}

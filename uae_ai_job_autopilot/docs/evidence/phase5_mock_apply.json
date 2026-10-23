@@ -1,0 +1,70 @@
+{
+  "run_id": "20261023T202704Z-apply-320776d5",
+  "stats": {
+    "candidates": 4,
+    "attempted": 4,
+    "applied": 1,
+    "dry_run": 0,
+    "blocked": 1,
+    "submission_unverified": 1,
+    "skipped_unsupported": 1,
+    "duplicates": 0,
+    "checklist_failed": 0,
+    "errors": 0
+  },
+  "live_submission_enabled": false,
+  "attempts": [
+    {
+      "application_key": "eebacfca88d886845a83fc98",
+      "channel_id": "mock_sandbox",
+      "outcome": "applied",
+      "status": "applied",
+      "confirmation_verified": true,
+      "confirmation_reference": "MOCK-CD8A0312EC",
+      "block_reason": null,
+      "notes": [
+        "mock applied scenario=success"
+      ]
+    },
+    {
+      "application_key": "b63d36ed9f2279ab96e2298b",
+      "channel_id": "mock_sandbox",
+      "outcome": "blocked",
+      "status": "blocked",
+      "confirmation_verified": false,
+      "confirmation_reference": null,
+      "block_reason": "CAPTCHA challenge detected \u2014 automated solve is prohibited",
+      "notes": [
+        "mock blocked scenario=captcha"
+      ]
+    },
+    {
+      "application_key": "a6231b590e8b03320d91899b",
+      "channel_id": "mock_sandbox",
+      "outcome": "submission_unverified",
+      "status": "submission_unverified",
+      "confirmation_verified": false,
+      "confirmation_reference": null,
+      "block_reason": null,
+      "notes": [
+        "Submitted to mock endpoint but confirmation markers absent"
+      ]
+    },
+    {
+      "application_key": "935718e153a4257da7e3d95b",
+      "channel_id": "unsupported",
+      "outcome": "skipped_unsupported",
+      "status": "skipped_unsupported",
+      "confirmation_verified": false,
+      "confirmation_reference": null,
+      "block_reason": "Channel 'unsupported' / source 'linkedin_jobs' is not allowlisted for automated application. Discovery APIs \u2260 apply permission. No bypass or fabricated submission.",
+      "notes": [
+        "Channel 'unsupported' / source 'linkedin_jobs' is not allowlisted for automated application. Discovery APIs \u2260 apply permission. No bypass or fabricated submission."
+      ]
+    }
+  ],
+  "notes": [
+    "live_submission=False; channels=['mock_sandbox', 'greenhouse_browser', 'lever_browser']"
+  ],
+  "failures": []
+}

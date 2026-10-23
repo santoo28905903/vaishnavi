@@ -1,0 +1,20 @@
+{
+  "status": "OK",
+  "data": [
+    {
+      "job_id": "js-1",
+      "job_title": "Generative AI Engineer",
+      "employer_name": "Example UAE AI",
+      "job_city": "Dubai",
+      "job_state": "Dubai",
+      "job_country": "AE",
+      "job_apply_link": "https://example.com/jobs/js-1",
+      "job_posted_at_datetime_utc": "2026-10-24T04:00:00.000Z",
+      "job_description": "Build RAG systems.",
+      "job_min_salary": 25000,
+      "job_max_salary": 30000,
+      "job_salary_currency": "AED",
+      "job_salary_period": "MONTH"
+    }
+  ]
+}

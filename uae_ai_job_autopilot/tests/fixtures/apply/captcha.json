@@ -1,0 +1,5 @@
+{
+  "outcome": "blocked",
+  "block_reason": "CAPTCHA challenge detected — automated solve is prohibited",
+  "signals": ["captcha", "recaptcha"]
+}

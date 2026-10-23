@@ -1,0 +1,127 @@
+name: UAE AI Job Autopilot Daily
+
+on:
+  schedule:
+    # 10:00 Asia/Kolkata every day
+    - cron: "0 10 * * *"
+      timezone: Asia/Kolkata
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Plan stages without live discovery/model calls"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      resume_run_id:
+        description: "Optional checkpoint run_id to resume"
+        required: false
+        default: ""
+        type: string
+
+concurrency:
+  group: uae-job-autopilot-daily
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  daily:
+    name: Daily pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        working-directory: uae_ai_job_autopilot
+    env:
+      ENVIRONMENT: cloud
+      LOG_LEVEL: INFO
+      ENABLE_LIVE_SUBMISSION: "false"
+      OLLAMA_ENABLED: "false"
+      # Secrets (may be empty — pipeline reports honestly)
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+      JEV_MODEL: ${{ secrets.JEV_MODEL || 'jev-1.14.0' }}
+      JSEARCH_API_KEY: ${{ secrets.JSEARCH_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      ENABLE_CLOUD_GENERATIVE: ${{ secrets.ENABLE_CLOUD_GENERATIVE || 'false' }}
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+      GOOGLE_SHEETS_SPREADSHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
+      SHEETS_ENABLED: ${{ secrets.SHEETS_ENABLED || 'false' }}
+      GMAIL_CREDENTIALS_JSON: ${{ secrets.GMAIL_CREDENTIALS_JSON }}
+      GMAIL_ENABLED: ${{ secrets.GMAIL_ENABLED || 'false' }}
+      REPORT_TO_EMAIL: ${{ secrets.REPORT_TO_EMAIL || 'vaishnavibatchu28@gmail.com' }}
+      DAILY_COST_CAP_USD: ${{ secrets.DAILY_COST_CAP_USD || '2.0' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: uae_ai_job_autopilot/pyproject.toml
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Validate cloud database configuration
+        id: dbcheck
+        run: |
+          python - <<'PY'
+          import os, sys
+          from uae_job_autopilot.ops.cloud_db import assert_persistent_database, DatabaseConfigError
+          from uae_job_autopilot.config import Settings
+          dry = os.environ.get("DRY_RUN_INPUT", "false").lower() == "true"
+          settings = Settings(environment="cloud")
+          if not settings.database_url:
+              print("DATABASE_URL secret is missing")
+              # Allow dry-run validation workflow without a DB secret
+              if dry:
+                  print("dry_run: skipping hard DB failure")
+                  sys.exit(0)
+              sys.exit(2)
+          try:
+              url = assert_persistent_database(settings)
+              # Never print credentials
+              scheme = url.split(":", 1)[0]
+              print(f"DATABASE_URL ok (scheme={scheme})")
+          except DatabaseConfigError as e:
+              print(str(e))
+              sys.exit(2)
+          PY
+        env:
+          DRY_RUN_INPUT: ${{ github.event.inputs.dry_run || 'false' }}
+
+      - name: Run daily pipeline
+        id: pipeline
+        run: |
+          ARGS=(daily)
+          if [ "${{ github.event.inputs.dry_run || 'false' }}" = "true" ]; then
+            ARGS+=(--dry-run)
+          fi
+          if [ -n "${{ github.event.inputs.resume_run_id }}" ]; then
+            ARGS+=(--resume-run-id "${{ github.event.inputs.resume_run_id }}")
+          fi
+          ARGS+=(--summary-only)
+          uae-jobs "${ARGS[@]}"
+        continue-on-error: false
+
+      - name: Upload run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uae-job-autopilot-run-${{ github.run_id }}
+          path: |
+            uae_ai_job_autopilot/data/runs/
+            uae_ai_job_autopilot/data/documents/
+          if-no-files-found: warn
+          retention-days: 14

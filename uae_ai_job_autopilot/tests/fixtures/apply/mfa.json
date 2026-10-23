@@ -1,0 +1,5 @@
+{
+  "outcome": "blocked",
+  "block_reason": "MFA / login challenge detected — blocked",
+  "signals": ["mfa", "two-factor"]
+}
