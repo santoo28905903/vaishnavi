@@ -1,0 +1,88 @@
+# Source registry — Phase 1 will flip statuses based on real adapter runs.
+# enabled: false means the orchestrator must NOT claim the source was searched.
+
+defaults:
+  timeout_seconds: 30
+  max_retries: 3
+
+aggregators:
+  jsearch:
+    enabled: false
+    requires_env: JSEARCH_API_KEY
+    status: planned
+  jooble:
+    enabled: false
+    requires_env: JOOBLE_API_KEY
+    status: planned
+
+ats_public:
+  greenhouse:
+    enabled: false
+    status: planned
+  lever:
+    enabled: false
+    status: planned
+  ashby:
+    enabled: false
+    status: planned
+  smartrecruiters:
+    enabled: false
+    status: planned
+  workday:
+    enabled: false
+    status: planned_conditional
+  oracle_recruiting:
+    enabled: false
+    status: planned_conditional
+  sap_successfactors:
+    enabled: false
+    status: planned_conditional
+
+job_boards:
+  naukrigulf:
+    enabled: false
+    status: planned_authorized_path_only
+  linkedin_jobs:
+    enabled: false
+    status: planned_alerts_or_licensed_only
+  indeed_uae:
+    enabled: false
+    status: planned_authorized_path_only
+  bayt:
+    enabled: false
+    status: planned_authorized_path_only
+  gulftalent:
+    enabled: false
+    status: planned_authorized_path_only
+  foundit_gulf:
+    enabled: false
+    status: planned_authorized_path_only
+
+recruiters:
+  michael_page_uae:
+    enabled: false
+    status: planned
+  hays_uae:
+    enabled: false
+    status: planned
+  robert_half:
+    enabled: false
+    status: planned
+  tasc_outsourcing:
+    enabled: false
+    status: planned
+  charterhouse_me:
+    enabled: false
+    status: planned
+  discovered_mena:
+    enabled: false
+    status: planned
+  kingston_stanley:
+    enabled: false
+    status: planned
+  salt:
+    enabled: false
+    status: planned
+  cooper_fitch:
+    enabled: false
+    status: planned
