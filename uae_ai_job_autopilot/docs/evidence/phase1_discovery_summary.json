@@ -1,0 +1,82 @@
+{
+  "run_id": "20261023T194918Z-5f2d7067",
+  "dry_run": false,
+  "stats": {
+    "sources_configured": 24,
+    "sources_attempted": 3,
+    "sources_success": 3,
+    "sources_failed": 0,
+    "sources_skipped": 21,
+    "jobs_raw": 2833,
+    "jobs_uae": 4,
+    "jobs_fresh": 0,
+    "jobs_duplicates_removed": 0,
+    "jobs_excluded_stale_or_unverifiable": 4,
+    "jobs_selected_for_evaluation": 0,
+    "jobs_additionally_discovered": 4
+  },
+  "sources_queried": [
+    {
+      "source": "greenhouse",
+      "status": "success",
+      "detail": "Queried 8/8 boards; 1634 raw; 3 UAE AI/ML candidates"
+    },
+    {
+      "source": "lever",
+      "status": "empty",
+      "detail": "Queried 2/2 sites; 398 raw; 0 UAE"
+    },
+    {
+      "source": "ashby",
+      "status": "success",
+      "detail": "Queried 1/1 boards; 801 raw; 1 UAE"
+    }
+  ],
+  "sources_unavailable": [
+    {
+      "source": "jsearch",
+      "status": "skipped_not_configured",
+      "detail": "Missing required env var JSEARCH_API_KEY; source was not searched"
+    },
+    {
+      "source": "naukrigulf",
+      "status": "skipped_not_configured",
+      "detail": "No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/naukrigulf; source was not searched via live API"
+    },
+    {
+      "source": "linkedin_jobs",
+      "status": "skipped_not_configured",
+      "detail": "No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/linkedin_jobs; source was not searched via live API"
+    },
+    {
+      "source": "indeed_uae",
+      "status": "skipped_not_configured",
+      "detail": "No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/indeed_uae; source was not searched via live API"
+    },
+    {
+      "source": "bayt",
+      "status": "skipped_not_configured",
+      "detail": "No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/bayt; source was not searched via live API"
+    },
+    {
+      "source": "gulftalent",
+      "status": "skipped_not_configured",
+      "detail": "No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/gulftalent; source was not searched via live API"
+    },
+    {
+      "source": "michael_page",
+      "status": "skipped_not_configured",
+      "detail": "No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/michael_page; source was not searched via live API"
+    }
+  ],
+  "selected_job_links": [],
+  "notes": [
+    "jsearch: not searched (skipped_not_configured) \u2014 Missing required env var JSEARCH_API_KEY; source was not searched",
+    "naukrigulf: not searched (skipped_not_configured) \u2014 No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/naukrigulf; source was not searched via live API",
+    "linkedin_jobs: not searched (skipped_not_configured) \u2014 No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/linkedin_jobs; source was not searched via live API",
+    "indeed_uae: not searched (skipped_not_configured) \u2014 No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/indeed_uae; source was not searched via live API",
+    "bayt: not searched (skipped_not_configured) \u2014 No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/bayt; source was not searched via live API",
+    "gulftalent: not searched (skipped_not_configured) \u2014 No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/gulftalent; source was not searched via live API",
+    "michael_page: not searched (skipped_not_configured) \u2014 No JSON alert files in /workspace/uae_ai_job_autopilot/data/alerts/michael_page; source was not searched via live API"
+  ]
+}

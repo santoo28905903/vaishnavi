@@ -1,0 +1,26 @@
+[
+  {
+    "id": "lev-1",
+    "text": "Forward Deployed Engineer",
+    "hostedUrl": "https://jobs.lever.co/palantir/lev-1",
+    "applyUrl": "https://jobs.lever.co/palantir/lev-1/apply",
+    "createdAt": 1792821600000,
+    "categories": {
+      "location": "Abu Dhabi, United Arab Emirates",
+      "allLocations": ["Abu Dhabi, United Arab Emirates"],
+      "team": "Engineering",
+      "commitment": "Full-time"
+    },
+    "descriptionPlain": "Build AI systems with customers in the UAE."
+  },
+  {
+    "id": "lev-2",
+    "text": "Workplace Operations Analyst",
+    "hostedUrl": "https://jobs.lever.co/palantir/lev-2",
+    "createdAt": 1791979200000,
+    "categories": {
+      "location": "Abu Dhabi, United Arab Emirates",
+      "allLocations": ["Abu Dhabi, United Arab Emirates"]
+    }
+  }
+]

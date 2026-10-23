@@ -1,0 +1,23 @@
+{
+  "jobs": [
+    {
+      "id": "ash-1",
+      "title": "Forward Deployed Engineer - UAE",
+      "location": "Abu Dhabi, UAE",
+      "publishedAt": "2026-10-24T05:00:00.000+00:00",
+      "jobUrl": "https://jobs.ashbyhq.com/openai/ash-1",
+      "applyUrl": "https://jobs.ashbyhq.com/openai/ash-1/application",
+      "department": "Deployment",
+      "isListed": true,
+      "descriptionPlain": "Deploy AI in the UAE."
+    },
+    {
+      "id": "ash-2",
+      "title": "Research Engineer",
+      "location": "San Francisco",
+      "publishedAt": "2026-10-24T05:00:00.000+00:00",
+      "jobUrl": "https://jobs.ashbyhq.com/openai/ash-2",
+      "isListed": true
+    }
+  ]
+}

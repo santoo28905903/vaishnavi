@@ -1,0 +1,67 @@
+# Job search profile for UAE AI / ML roles.
+
+target_country: United Arab Emirates
+locations:
+  - Dubai
+  - Abu Dhabi
+  - Sharjah
+  - United Arab Emirates
+
+target_titles:
+  - Senior Data Scientist
+  - Generative AI Engineer
+  - Agentic AI Engineer
+  - AI Engineer
+  - Senior AI Engineer
+  - Machine Learning Engineer
+  - Senior Machine Learning Engineer
+  - Applied AI Engineer
+  - LLM Engineer
+  - RAG Engineer
+  - NLP Engineer
+  - AI Solutions Engineer
+  - AI Platform Engineer
+  - MLOps Engineer
+  - Forward Deployed Engineer
+  - Applied Scientist
+
+experience_band_years:
+  preferred_min: 3
+  preferred_max: 6
+  # Always evaluate actual mandatory requirements on the posting.
+
+freshness:
+  window_hours: 24
+  timezone_schedule: Asia/Kolkata
+  daily_run_local_time: "10:00"
+
+evaluation_cap:
+  max_verified_fresh_unique_jobs: 50
+
+priority_employers:
+  - G42
+  - Core42
+  - Presight
+  - Inception
+  - AIQ
+  - Microsoft
+  - AWS
+  - Google
+  - Oracle
+  - IBM
+  - Salesforce
+  - SAP
+  - Accenture
+  - Deloitte
+  - PwC
+  - EY
+  - KPMG
+  - Capgemini
+  - Emirates Group
+  - Emirates NBD
+  - Careem
+  - Talabat
+  - Noon
+  - Property Finder
+  - Dubizzle
+  - e&
