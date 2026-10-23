@@ -1,0 +1,59 @@
+# Model routing — wired in Phase 2. Cloud must not require local Ollama.
+
+jev:
+  provider: typesafe
+  endpoint: https://api.typesafe.ai/v1/systemone
+  api_key_env: TYPESAFE_API_KEY
+  model_env: JEV_MODEL
+  default_model: jev-1.14.0
+  alias_latest: jev-latest
+  uses:
+    - job_relevance
+    - skill_alignment
+    - seniority_compatibility
+    - visa_evidence
+    - match_prioritization
+    - next_action
+
+embeddings:
+  provider: sentence_transformers
+  model: sentence-transformers/all-MiniLM-L6-v2
+  cache: true
+
+generative:
+  local_router:
+    enabled: false  # enable only on Mac with Ollama
+    provider: ollama
+    model: qwen2.5:7b-instruct
+  cloud_router:
+    enabled: true
+    providers:
+      - name: groq
+        enabled: false
+        api_key_env: GROQ_API_KEY
+        model: TBD_free_tier  # pin after Phase 2 verification
+      - name: gemini
+        enabled: false
+        api_key_env: GEMINI_API_KEY
+        model: TBD_flash_lite  # pin after Phase 2 verification
+      - name: optional_paid
+        enabled: false
+
+scoring:
+  resume_fit:
+    embedding_weight: 0.40
+    rubric_weight: 0.60
+    threshold: 75
+  visa:
+    deterministic_weight: 0.50
+    jev_weight: 0.50
+    threshold: 70
+  ats:
+    structure_weight: 0.40
+    keyword_weight: 0.60
+    threshold: 80
+
+policy:
+  use_models_only_when_deterministic_insufficient: true
+  no_unnecessary_reasoning_traces: true
+  track_tokens_and_cost: true
