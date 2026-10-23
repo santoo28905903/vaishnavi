@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uae-job-autopilot"
-version = "0.1.0"
-description = "UAE AI Job Autopilot — Phase 1 multi-source discovery"
+version = "0.2.0"
+description = "UAE AI Job Autopilot — Phase 1 discovery + Phase 2 matching"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -16,6 +16,9 @@ dependencies = [
   "tenacity>=8.0",
   "python-dateutil>=2.9",
   "rich>=13.0",
+  "pypdf>=4.0",
+  "numpy>=1.26",
+  "sentence-transformers>=3.0",
 ]
 
 [project.optional-dependencies]

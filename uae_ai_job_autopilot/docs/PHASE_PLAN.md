@@ -258,16 +258,16 @@ Status legend: **Planned** = design-ready; **Blocked** = needs credential or aut
 
 ### Phase 2 — Matching & models
 
-- [ ] TypeSafe Jev client (System One), pinned `JEV_MODEL`
-- [ ] Deterministic hard rules: salary floor AED 20,000 max, experience, location, explicit blockers
-- [ ] Sentence Transformers embeddings + cache
-- [ ] Cloud vs local generative routers (Ollama local-only)
-- [ ] Resume parse from PDF (truthful fields only)
-- [ ] Fit score: 40% embedding + 60% Jev rubric; threshold 75
-- [ ] Visa evidence: 50% deterministic + 50% Jev; threshold 70; unknown ≠ confirmed
-- [ ] Decision/cost/error telemetry
-- [ ] Tests with mocked Jev + fixture jobs; optional live smoke if key present
-- [ ] Update docs; **stop**
+- [x] TypeSafe Jev client (System One), pinned `JEV_MODEL`
+- [x] Deterministic hard rules: salary floor AED 20,000 max, experience, location, explicit blockers
+- [x] Sentence Transformers embeddings + cache
+- [x] Cloud vs local generative routers (Ollama local-only)
+- [x] Resume parse from PDF (truthful fields only)
+- [x] Fit score: 40% embedding + 60% Jev rubric; threshold 75
+- [x] Visa evidence: 50% deterministic + 50% Jev; threshold 70; unknown ≠ confirmed
+- [x] Decision/cost/error telemetry
+- [x] Tests with mocked Jev + fixture jobs; optional live smoke if key present
+- [x] Update docs; **stop**
 
 ### Phase 3 — Documents, tracking, reporting
 

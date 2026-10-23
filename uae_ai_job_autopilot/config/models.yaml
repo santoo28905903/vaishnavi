@@ -1,4 +1,4 @@
-# Model routing — wired in Phase 2. Cloud must not require local Ollama.
+# Model routing — Phase 2. Cloud must not require local Ollama.
 
 jev:
   provider: typesafe
@@ -22,7 +22,7 @@ embeddings:
 
 generative:
   local_router:
-    enabled: false  # enable only on Mac with Ollama
+    enabled: false  # enable only on Mac with Ollama; never required in cloud
     provider: ollama
     model: qwen2.5:7b-instruct
   cloud_router:
@@ -31,11 +31,11 @@ generative:
       - name: groq
         enabled: false
         api_key_env: GROQ_API_KEY
-        model: TBD_free_tier  # pin after Phase 2 verification
+        model: llama-3.1-8b-instant
       - name: gemini
         enabled: false
         api_key_env: GEMINI_API_KEY
-        model: TBD_flash_lite  # pin after Phase 2 verification
+        model: gemini-2.0-flash-lite
       - name: optional_paid
         enabled: false
 

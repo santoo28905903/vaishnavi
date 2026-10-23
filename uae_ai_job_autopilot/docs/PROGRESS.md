@@ -4,80 +4,63 @@ Last updated: 24 Oct 2026, Asia/Kolkata.
 
 ## Phase 0 — Repository inspection & plan
 
-- [x] Inspect git repository
-- [x] Extract verified resume facts
-- [x] Write planning docs
-- [x] Stop before implementation
+- [x] Complete
 
 ## Phase 1 — Discovery
 
-- [x] Package scaffold (`pyproject.toml`, CLI, logging, settings)
-- [x] Domain models + SourceHealth + DiscoveryReport
-- [x] Adapters: Greenhouse, Lever, Ashby, JSearch
-- [x] Alert ingestion: LinkedIn, NaukriGulf, Indeed UAE, Bayt, GulfTalent, Michael Page
-- [x] Normalization, timestamps, UAE filter, AI/ML title gate
-- [x] Cross-source dedupe + verified 24h freshness + evaluation cap 50
-- [x] CLI `dry-run` and `discover`
-- [x] Mocked tests + live connectivity tests
-- [x] Real discovery run evidence under `docs/evidence/`
-- [x] **Stop before Phase 2**
+- [x] Complete (see prior evidence under `docs/evidence/phase1_*`)
+
+## Phase 2 — Matching & models
+
+- [x] TypeSafe Jev client (`POST /v1/systemone`), pinned `JEV_MODEL`
+- [x] Deterministic hard rules (salary floor, experience gap, nationals-only, no-sponsorship)
+- [x] Sentence Transformers embeddings + disk cache
+- [x] Cloud vs local generative routers (Ollama local-only; Groq/Gemini opt-in)
+- [x] Resume parse from PDF (truthful fields only)
+- [x] Fit score: 40% embedding + 60% Jev rubric; threshold 75
+- [x] Visa: 50% deterministic + 50% Jev; threshold 70; unknown ≠ confirmed
+- [x] Decision/cost/error telemetry + model decision cache
+- [x] Tests with mocked Jev + fixtures; live Jev skipped without `TYPESAFE_API_KEY`
+- [x] Update docs; **stop before Phase 3**
 
 ### Implemented modules
 
-- `src/uae_job_autopilot/cli.py`
-- `src/uae_job_autopilot/config.py`
-- `src/uae_job_autopilot/domain/*`
-- `src/uae_job_autopilot/discovery/{base,registry,orchestrator,normalize,dedupe,freshness}.py`
-- `src/uae_job_autopilot/discovery/adapters/{greenhouse,lever,ashby,jsearch,alerts,common}.py`
-- `src/uae_job_autopilot/utils/*`
+- `src/uae_job_autopilot/models/{jev,embeddings,routers,cache,costs}.py`
+- `src/uae_job_autopilot/matching/{resume,hard_rules,visa,scoring,pipeline}.py`
+- CLI: `uae-jobs evaluate`
 
 ### Test results (executed)
 
 ```text
-17 passed in ~12.6s
-(unit + mocked integration + live connectivity)
+19 passed, 5 deselected (-m 'not live') 
+# Full suite with live markers: live Jev skipped without TYPESAFE_API_KEY;
+# Phase 1 live ATS tests pass when network available.
 ```
 
-See `docs/evidence/phase1_pytest.txt`.
+See `docs/evidence/phase2_pytest.txt`.
 
-### Real external integrations tested
+### Real provider calls
 
-| Source | Result |
-|--------|--------|
-| Greenhouse public boards API | Live success (8 boards; HTTP 200) |
-| Lever public postings API | Live success (2 sites; 0 UAE AI/ML after filters → `empty`) |
-| Ashby public job board API | Live success (openai board) |
-| JSearch RapidAPI | Not searched — `JSEARCH_API_KEY` absent (`skipped_not_configured`) |
-| LinkedIn / NaukriGulf / Indeed UAE / Bayt / GulfTalent / Michael Page | Not searched live — alert dirs empty (`skipped_not_configured`); mocked alert ingestion covered in tests |
+| Provider | Status |
+|----------|--------|
+| TypeSafe Jev | **Not called in evidence run** — `TYPESAFE_API_KEY` absent. Mocked System One responses covered in unit tests. Live test auto-skips. |
+| Sentence Transformers (`all-MiniLM-L6-v2`) | Loaded locally during `uae-jobs evaluate` evidence run |
+| Ollama / Groq / Gemini | Disabled / no keys — not called |
 
-### Discovery run evidence
+### Evaluate evidence (fixtures, no Jev key)
 
-- Summary: `docs/evidence/phase1_discovery_summary.json`
-- Detail: `docs/evidence/phase1_discovery_full.json`
-- Dry-run: `docs/evidence/phase1_dry_run.json`
+`docs/evidence/phase2_evaluate_summary.json` / `phase2_evaluate_run.summary.json`
 
-Recorded stats (run `20261023T194918Z-5f2d7067`):
+- jobs_input: 6
+- hard_blocked: 4 (nationals-only, no-sponsorship, salary floor, experience gap)
+- match_pass: 0 (Jev rubric unavailable without API key → remaining jobs `needs_model` / fail resume gate)
+- notes honestly state Jev was not configured
 
-- sources attempted: 3 (greenhouse, lever, ashby)
-- jobs raw: 2833
-- UAE AI/ML: 4 (none inside verified 24h window)
-- selected for evaluation: 0
-- JSearch / alert boards explicitly **not searched**
-
-UAE AI/ML jobs seen but outside 24h window (not selected):
-
-1. Associate Data Scientist - Builders Program (Emirati National) — Tamara / Greenhouse — published 2026-04-27
-2. Binance Accelerator Program - Data Scientist, Analytics — Greenhouse — published 2026-10-14
-3. Principal AI Agent Development Engineer/Architect — Greenhouse — published 2026-06-26
-4. Forward Deployed Engineer - UAE — OpenAI / Ashby — published 2026-09-21
-
-## Phase 2 — Matching & models
-
-- [ ] Not started — waiting for Phase 2 command
+With a mocked Jev client in unit tests: `good-rag-1` **PASS**es resume≥75 and visa≥70 with `sponsorship_confirmed=true`; blockers remain authoritative.
 
 ## Phase 3 — Documents, DB, Sheets, Gmail
 
-- [ ] Not started
+- [ ] Not started — waiting for Phase 3 command
 
 ## Phase 4 — GitHub Actions & cloud ops
 

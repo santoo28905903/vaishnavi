@@ -7,8 +7,11 @@ from pydantic import BaseModel, Field
 
 from uae_job_autopilot.domain.enums import (
     AccessMode,
+    MatchDecision,
     PublicationTimeConfidence,
     SourceStatus,
+    SponsorshipLabel,
+    VisaEvidenceLabel,
 )
 
 
@@ -95,3 +98,90 @@ class DiscoveryReport(BaseModel):
 class AdapterFetchResult(BaseModel):
     health: SourceHealth
     jobs: list[JobPosting] = Field(default_factory=list)
+
+
+class ModelUsageRecord(BaseModel):
+    provider: str
+    model: str
+    operation: str
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cost_usd: float = 0.0
+    cached: bool = False
+    error: str | None = None
+    meta: dict[str, Any] = Field(default_factory=dict)
+
+
+class HardExclusion(BaseModel):
+    code: str
+    reason: str
+    authoritative: bool = True
+
+
+class VisaAssessment(BaseModel):
+    deterministic_score: float
+    jev_score: float | None = None
+    combined_score: float
+    threshold: float = 70.0
+    passed: bool
+    sponsorship_label: SponsorshipLabel = SponsorshipLabel.UNKNOWN
+    evidence_label: VisaEvidenceLabel = VisaEvidenceLabel.NEUTRAL
+    deterministic_signals: list[str] = Field(default_factory=list)
+    jev_raw: dict[str, Any] = Field(default_factory=dict)
+    notes: list[str] = Field(default_factory=list)
+    # Explicit: unknown must never be described as confirmed sponsorship
+    sponsorship_confirmed: bool = False
+
+
+class ResumeFitAssessment(BaseModel):
+    embedding_score: float
+    rubric_score: float | None = None
+    combined_score: float
+    threshold: float = 75.0
+    passed: bool
+    embedding_weight: float = 0.40
+    rubric_weight: float = 0.60
+    jev_raw: dict[str, Any] = Field(default_factory=dict)
+    notes: list[str] = Field(default_factory=list)
+
+
+class JobMatchResult(BaseModel):
+    job: JobPosting
+    decision: MatchDecision
+    hard_exclusions: list[HardExclusion] = Field(default_factory=list)
+    resume_fit: ResumeFitAssessment | None = None
+    visa: VisaAssessment | None = None
+    next_action: str | None = None
+    usage: list[ModelUsageRecord] = Field(default_factory=list)
+    evidence: dict[str, Any] = Field(default_factory=dict)
+
+
+class EvaluationStats(BaseModel):
+    jobs_input: int = 0
+    hard_blocked: int = 0
+    resume_pass: int = 0
+    resume_fail: int = 0
+    visa_pass: int = 0
+    visa_fail: int = 0
+    match_pass: int = 0
+    needs_model: int = 0
+    model_errors: int = 0
+    total_cost_usd: float = 0.0
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
+
+
+class EvaluationReport(BaseModel):
+    run_id: str
+    started_at: datetime
+    finished_at: datetime
+    dry_run: bool = False
+    jev_configured: bool
+    embedding_model: str
+    stats: EvaluationStats
+    results: list[JobMatchResult] = Field(default_factory=list)
+    usage: list[ModelUsageRecord] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+    def passes(self) -> list[JobMatchResult]:
+        return [r for r in self.results if r.decision == MatchDecision.PASS]

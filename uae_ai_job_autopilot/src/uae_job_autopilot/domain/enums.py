@@ -24,3 +24,27 @@ class AccessMode(StrEnum):
     LICENSED_API = "licensed_api"
     ALERT_INGESTION = "alert_ingestion"
     UNSUPPORTED = "unsupported"
+
+
+class MatchDecision(StrEnum):
+    PASS = "pass"
+    REJECT = "reject"
+    BLOCKED = "blocked"  # hard exclusion / explicit sponsorship blocker
+    NEEDS_MODEL = "needs_model"  # deterministic insufficient; model unavailable
+    SKIPPED = "skipped"
+
+
+class SponsorshipLabel(StrEnum):
+    SPONSORS = "sponsors"
+    NO_SPONSORSHIP = "no_sponsorship"
+    NATIONALS_ONLY = "nationals_only"
+    UNCLEAR = "unclear"
+    UNKNOWN = "unknown"  # never treat as confirmed sponsorship
+
+
+class VisaEvidenceLabel(StrEnum):
+    STRONG_POSITIVE = "strong_positive"
+    WEAK_POSITIVE = "weak_positive"
+    NEUTRAL = "neutral"
+    NEGATIVE = "negative"
+    BLOCKER = "blocker"

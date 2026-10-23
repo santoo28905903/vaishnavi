@@ -1,0 +1,478 @@
+{
+  "run_id": "20261023T195928Z-match-d9e92bfc",
+  "started_at": "2026-10-23T19:59:28.976389Z",
+  "finished_at": "2026-10-23T19:59:28.977233Z",
+  "dry_run": false,
+  "jev_configured": false,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "stats": {
+    "jobs_input": 6,
+    "hard_blocked": 4,
+    "resume_pass": 0,
+    "resume_fail": 2,
+    "visa_pass": 1,
+    "visa_fail": 1,
+    "match_pass": 0,
+    "needs_model": 2,
+    "model_errors": 0,
+    "total_cost_usd": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0
+  },
+  "results": [
+    {
+      "job": {
+        "source": "fixture",
+        "source_job_id": "good-rag-1",
+        "title": "Senior Generative AI Engineer",
+        "employer": "Core42",
+        "location_raw": "Abu Dhabi, United Arab Emirates",
+        "locations_normalized": [
+          "Abu Dhabi",
+          "United Arab Emirates"
+        ],
+        "is_uae": true,
+        "application_url": "https://example.com/jobs/good-rag-1",
+        "description_text": "Build production RAG and multi-agent systems on GCP Vertex AI. Requirements: Python, LangChain/LangGraph, FastAPI, 3-6 years experience. Visa sponsorship available. Relocation support to UAE.",
+        "salary_raw": "AED 26000-32000 / month",
+        "salary_monthly_aed_min": 26000.0,
+        "salary_monthly_aed_max": 32000.0,
+        "published_at": "2026-10-24T02:00:00Z",
+        "publication_confidence": "verified",
+        "discovered_at": "2026-10-24T06:00:00Z",
+        "updated_at_source": null,
+        "fingerprint": "url:good-rag-1",
+        "raw_provenance": {},
+        "board_or_site": null
+      },
+      "decision": "needs_model",
+      "hard_exclusions": [],
+      "resume_fit": {
+        "embedding_score": 81.96,
+        "rubric_score": null,
+        "combined_score": 81.96,
+        "threshold": 75.0,
+        "passed": false,
+        "embedding_weight": 0.4,
+        "rubric_weight": 0.6,
+        "jev_raw": {
+          "answers": {},
+          "rubric_meta": {
+            "job_relevance": null,
+            "skill_alignment": null,
+            "seniority_ok": null
+          }
+        },
+        "notes": [
+          "Rubric (Jev) unavailable; combined score is embedding-only"
+        ]
+      },
+      "visa": {
+        "deterministic_score": 95.0,
+        "jev_score": null,
+        "combined_score": 95.0,
+        "threshold": 70.0,
+        "passed": true,
+        "sponsorship_label": "sponsors",
+        "evidence_label": "strong_positive",
+        "deterministic_signals": [
+          "explicit_sponsorship_language",
+          "relocation_support"
+        ],
+        "jev_raw": {},
+        "notes": [
+          "Jev visa assessment unavailable; deterministic signals only"
+        ],
+        "sponsorship_confirmed": true
+      },
+      "next_action": "hold_review",
+      "usage": [],
+      "evidence": {
+        "sponsorship_confirmed": true,
+        "jev_model": null
+      }
+    },
+    {
+      "job": {
+        "source": "fixture",
+        "source_job_id": "nationals-only-1",
+        "title": "Associate Data Scientist - Builders Program - (Emirati National)",
+        "employer": "Tamara",
+        "location_raw": "Dubai, United Arab Emirates",
+        "locations_normalized": [
+          "Dubai",
+          "United Arab Emirates"
+        ],
+        "is_uae": true,
+        "application_url": "https://example.com/jobs/nationals-only-1",
+        "description_text": "Emirati nationals only. Data science rotational program for UAE nationals.",
+        "salary_raw": null,
+        "salary_monthly_aed_min": null,
+        "salary_monthly_aed_max": null,
+        "published_at": "2026-10-24T02:00:00Z",
+        "publication_confidence": "verified",
+        "discovered_at": "2026-10-24T06:00:00Z",
+        "updated_at_source": null,
+        "fingerprint": "url:nationals-only-1",
+        "raw_provenance": {},
+        "board_or_site": null
+      },
+      "decision": "blocked",
+      "hard_exclusions": [
+        {
+          "code": "emirati_nationals_only",
+          "reason": "Posting restricts role to UAE/Emirati nationals",
+          "authoritative": true
+        }
+      ],
+      "resume_fit": null,
+      "visa": {
+        "deterministic_score": 0.0,
+        "jev_score": null,
+        "combined_score": 0.0,
+        "threshold": 70.0,
+        "passed": false,
+        "sponsorship_label": "nationals_only",
+        "evidence_label": "blocker",
+        "deterministic_signals": [
+          "nationals_only_language"
+        ],
+        "jev_raw": {},
+        "notes": [
+          "Hard exclusion already blocked sponsorship/nationality"
+        ],
+        "sponsorship_confirmed": false
+      },
+      "next_action": "reject",
+      "usage": [],
+      "evidence": {
+        "hard_exclusions": [
+          {
+            "code": "emirati_nationals_only",
+            "reason": "Posting restricts role to UAE/Emirati nationals",
+            "authoritative": true
+          }
+        ]
+      }
+    },
+    {
+      "job": {
+        "source": "fixture",
+        "source_job_id": "no-sponsor-1",
+        "title": "Machine Learning Engineer",
+        "employer": "Example Bank UAE",
+        "location_raw": "Dubai, UAE",
+        "locations_normalized": [
+          "Dubai",
+          "UAE"
+        ],
+        "is_uae": true,
+        "application_url": "https://example.com/jobs/no-sponsor-1",
+        "description_text": "ML engineer for credit models. Candidates must already have a valid UAE work visa. Visa sponsorship is not available.",
+        "salary_raw": "AED 28000 / month",
+        "salary_monthly_aed_min": 28000.0,
+        "salary_monthly_aed_max": 28000.0,
+        "published_at": "2026-10-24T03:00:00Z",
+        "publication_confidence": "verified",
+        "discovered_at": "2026-10-24T06:00:00Z",
+        "updated_at_source": null,
+        "fingerprint": "url:no-sponsor-1",
+        "raw_provenance": {},
+        "board_or_site": null
+      },
+      "decision": "blocked",
+      "hard_exclusions": [
+        {
+          "code": "no_visa_sponsorship",
+          "reason": "Explicit no-sponsorship / existing UAE status required",
+          "authoritative": true
+        }
+      ],
+      "resume_fit": null,
+      "visa": {
+        "deterministic_score": 5.0,
+        "jev_score": null,
+        "combined_score": 5.0,
+        "threshold": 70.0,
+        "passed": false,
+        "sponsorship_label": "no_sponsorship",
+        "evidence_label": "blocker",
+        "deterministic_signals": [
+          "explicit_no_sponsorship"
+        ],
+        "jev_raw": {},
+        "notes": [
+          "Hard exclusion already blocked sponsorship/nationality"
+        ],
+        "sponsorship_confirmed": false
+      },
+      "next_action": "reject",
+      "usage": [],
+      "evidence": {
+        "hard_exclusions": [
+          {
+            "code": "no_visa_sponsorship",
+            "reason": "Explicit no-sponsorship / existing UAE status required",
+            "authoritative": true
+          }
+        ]
+      }
+    },
+    {
+      "job": {
+        "source": "fixture",
+        "source_job_id": "low-salary-1",
+        "title": "AI Engineer",
+        "employer": "Startup DXB",
+        "location_raw": "Dubai, United Arab Emirates",
+        "locations_normalized": [
+          "Dubai",
+          "United Arab Emirates"
+        ],
+        "is_uae": true,
+        "application_url": "https://example.com/jobs/low-salary-1",
+        "description_text": "Junior AI engineer. Python and LLMs. 1-2 years experience.",
+        "salary_raw": "AED 12000-15000 / month",
+        "salary_monthly_aed_min": 12000.0,
+        "salary_monthly_aed_max": 15000.0,
+        "published_at": "2026-10-24T01:00:00Z",
+        "publication_confidence": "verified",
+        "discovered_at": "2026-10-24T06:00:00Z",
+        "updated_at_source": null,
+        "fingerprint": "url:low-salary-1",
+        "raw_provenance": {},
+        "board_or_site": null
+      },
+      "decision": "blocked",
+      "hard_exclusions": [
+        {
+          "code": "salary_below_floor",
+          "reason": "Verified max monthly AED 15000 below hard floor 20000",
+          "authoritative": true
+        }
+      ],
+      "resume_fit": null,
+      "visa": {
+        "deterministic_score": 40.0,
+        "jev_score": null,
+        "combined_score": 40.0,
+        "threshold": 70.0,
+        "passed": false,
+        "sponsorship_label": "unclear",
+        "evidence_label": "neutral",
+        "deterministic_signals": [
+          "sponsorship_not_stated"
+        ],
+        "jev_raw": {},
+        "notes": [
+          "Jev visa assessment unavailable; deterministic signals only",
+          "Sponsorship not confirmed (unknown/unclear ≠ sponsored)"
+        ],
+        "sponsorship_confirmed": false
+      },
+      "next_action": "reject",
+      "usage": [],
+      "evidence": {
+        "hard_exclusions": [
+          {
+            "code": "salary_below_floor",
+            "reason": "Verified max monthly AED 15000 below hard floor 20000",
+            "authoritative": true
+          }
+        ]
+      }
+    },
+    {
+      "job": {
+        "source": "fixture",
+        "source_job_id": "unclear-visa-1",
+        "title": "LLM / RAG Engineer",
+        "employer": "Presight",
+        "location_raw": "Abu Dhabi, United Arab Emirates",
+        "locations_normalized": [
+          "Abu Dhabi",
+          "United Arab Emirates"
+        ],
+        "is_uae": true,
+        "application_url": "https://example.com/jobs/unclear-visa-1",
+        "description_text": "Design RAG pipelines, embeddings, and evaluation for enterprise search. Python, vector databases, 3+ years experience. Location Abu Dhabi.",
+        "salary_raw": null,
+        "salary_monthly_aed_min": null,
+        "salary_monthly_aed_max": null,
+        "published_at": "2026-10-24T04:00:00Z",
+        "publication_confidence": "verified",
+        "discovered_at": "2026-10-24T06:00:00Z",
+        "updated_at_source": null,
+        "fingerprint": "url:unclear-visa-1",
+        "raw_provenance": {},
+        "board_or_site": null
+      },
+      "decision": "needs_model",
+      "hard_exclusions": [],
+      "resume_fit": {
+        "embedding_score": 72.84,
+        "rubric_score": null,
+        "combined_score": 72.84,
+        "threshold": 75.0,
+        "passed": false,
+        "embedding_weight": 0.4,
+        "rubric_weight": 0.6,
+        "jev_raw": {
+          "answers": {},
+          "rubric_meta": {
+            "job_relevance": null,
+            "skill_alignment": null,
+            "seniority_ok": null
+          }
+        },
+        "notes": [
+          "Rubric (Jev) unavailable; combined score is embedding-only"
+        ]
+      },
+      "visa": {
+        "deterministic_score": 40.0,
+        "jev_score": null,
+        "combined_score": 40.0,
+        "threshold": 70.0,
+        "passed": false,
+        "sponsorship_label": "unclear",
+        "evidence_label": "neutral",
+        "deterministic_signals": [
+          "sponsorship_not_stated"
+        ],
+        "jev_raw": {},
+        "notes": [
+          "Jev visa assessment unavailable; deterministic signals only",
+          "Sponsorship not confirmed (unknown/unclear ≠ sponsored)"
+        ],
+        "sponsorship_confirmed": false
+      },
+      "next_action": "hold_review",
+      "usage": [],
+      "evidence": {
+        "sponsorship_confirmed": false,
+        "jev_model": null
+      }
+    },
+    {
+      "job": {
+        "source": "fixture",
+        "source_job_id": "exp-gap-1",
+        "title": "Principal Machine Learning Engineer",
+        "employer": "G42",
+        "location_raw": "Abu Dhabi, UAE",
+        "locations_normalized": [
+          "Abu Dhabi",
+          "UAE"
+        ],
+        "is_uae": true,
+        "application_url": "https://example.com/jobs/exp-gap-1",
+        "description_text": "Principal ML engineer. Minimum 12 years of experience leading large-scale ML platforms. Visa sponsorship available.",
+        "salary_raw": "AED 40000 / month",
+        "salary_monthly_aed_min": 40000.0,
+        "salary_monthly_aed_max": 40000.0,
+        "published_at": "2026-10-24T02:30:00Z",
+        "publication_confidence": "verified",
+        "discovered_at": "2026-10-24T06:00:00Z",
+        "updated_at_source": null,
+        "fingerprint": "url:exp-gap-1",
+        "raw_provenance": {},
+        "board_or_site": null
+      },
+      "decision": "blocked",
+      "hard_exclusions": [
+        {
+          "code": "experience_gap",
+          "reason": "Mandatory experience ~12+ years exceeds candidate ~4.0 years (+2 buffer)",
+          "authoritative": true
+        }
+      ],
+      "resume_fit": null,
+      "visa": {
+        "deterministic_score": 90.0,
+        "jev_score": null,
+        "combined_score": 90.0,
+        "threshold": 70.0,
+        "passed": true,
+        "sponsorship_label": "sponsors",
+        "evidence_label": "strong_positive",
+        "deterministic_signals": [
+          "explicit_sponsorship_language"
+        ],
+        "jev_raw": {},
+        "notes": [
+          "Jev visa assessment unavailable; deterministic signals only"
+        ],
+        "sponsorship_confirmed": true
+      },
+      "next_action": "reject",
+      "usage": [],
+      "evidence": {
+        "hard_exclusions": [
+          {
+            "code": "experience_gap",
+            "reason": "Mandatory experience ~12+ years exceeds candidate ~4.0 years (+2 buffer)",
+            "authoritative": true
+          }
+        ]
+      }
+    }
+  ],
+  "usage": [
+    {
+      "provider": "sentence_transformers",
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "operation": "similarity",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "cached": true,
+      "error": null,
+      "meta": {
+        "chars": 6677
+      }
+    },
+    {
+      "provider": "sentence_transformers",
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "operation": "similarity",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "cached": true,
+      "error": null,
+      "meta": {
+        "chars": 260
+      }
+    },
+    {
+      "provider": "sentence_transformers",
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "operation": "similarity",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "cached": true,
+      "error": null,
+      "meta": {
+        "chars": 6677
+      }
+    },
+    {
+      "provider": "sentence_transformers",
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "operation": "similarity",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "cached": true,
+      "error": null,
+      "meta": {
+        "chars": 198
+      }
+    }
+  ],
+  "notes": [
+    "TYPESAFE_API_KEY missing — Jev decisions unavailable; hard rules + embeddings still applied"
+  ]
+}

@@ -1,35 +1,35 @@
-# Architecture — Phase 1
+# Architecture — Phases 1–2
 
 ```text
-CLI (uae-jobs dry-run | discover)
+CLI (uae-jobs dry-run | discover | evaluate)
         │
-        ▼
-DiscoveryOrchestrator
+        ├─ DiscoveryOrchestrator (Phase 1)
+        │     Source adapters → UAE filter → title gate → dedupe → 24h freshness → cap 50
         │
-        ├─ SourceAdapter registry (independent)
-        │     ├─ Greenhouse / Lever / Ashby  (public ATS JSON)
-        │     ├─ JSearch                    (RapidAPI; requires key)
-        │     └─ AlertIngestionAdapter      (LinkedIn, NaukriGulf, Indeed UAE,
-        │                                    Bayt, GulfTalent, Michael Page)
-        │
-        ├─ UAE location filter
-        ├─ AI/ML title gate (deterministic; not Phase 2 scoring)
-        ├─ Cross-source dedupe (URL + soft employer/title/location)
-        ├─ Verified 24h freshness window
-        └─ Cap 50 selected jobs + SourceHealth report
+        └─ MatchingPipeline (Phase 2)
+              │
+              ├─ Hard exclusions (authoritative)
+              │     salary floor · experience gap · nationals-only · no-sponsorship
+              │
+              ├─ EmbeddingService (Sentence Transformers, cached)
+              │
+              ├─ JevClient → POST https://api.typesafe.ai/v1/systemone
+              │     score: relevance, skills
+              │     noul: seniority_ok
+              │     choice: visa_evidence, next_action
+              │
+              ├─ Resume fit = 0.4*embedding + 0.6*rubric  (≥75)
+              ├─ Visa = 0.5*deterministic + 0.5*Jev      (≥70)
+              └─ CostLedger + decision/embedding caches
 ```
 
-## Provenance rules
+Optional generative routers (Ollama local / Groq / Gemini cloud) are available for prose assist only and are **not** decision authority.
 
-| Field | Meaning |
-|-------|---------|
-| `published_at` | Timestamp from the source when available |
-| `publication_confidence` | `verified` / `unverified` / `unknown` |
-| `discovered_at` | When this run saw the job |
-| Only `verified` + within 24h | Counts toward evaluation selection |
+## Provenance & honesty
 
-## Honesty rules
-
-- If an adapter did not run successfully (disabled, missing key, empty alert dir, HTTP failure), SourceHealth records it and the run **must not** claim that platform was searched.
-- Alert adapters never scrape HTML; they only read permitted JSON exports under `data/alerts/<source>/`.
-- Zero verified-fresh jobs ≠ discovery unavailable (see CLI messaging and report notes).
+| Rule | Behavior |
+|------|----------|
+| Missing `TYPESAFE_API_KEY` | Jev not called; report `jev_configured=false` / `needs_model` |
+| Unknown sponsorship | `sponsorship_confirmed=false` always |
+| Explicit blocker | `decision=blocked` regardless of scores |
+| Cached Jev/embeddings | Recorded in usage with `cached=true`; Jev cache cost counted as 0 |
