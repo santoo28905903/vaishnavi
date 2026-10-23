@@ -1,0 +1,6 @@
+{
+  "outcome": "submission_unverified",
+  "confirmation_verified": false,
+  "confirmation_text": "Form POST returned 200 without confirmation page",
+  "notes": ["Submitted to mock endpoint but confirmation markers absent"]
+}

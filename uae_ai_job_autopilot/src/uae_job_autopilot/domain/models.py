@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field
 
 from uae_job_autopilot.domain.enums import (
     AccessMode,
+    ApplicationStatus,
+    ApplyOutcome,
     MatchDecision,
     PublicationTimeConfidence,
     SourceStatus,
@@ -185,3 +187,85 @@ class EvaluationReport(BaseModel):
 
     def passes(self) -> list[JobMatchResult]:
         return [r for r in self.results if r.decision == MatchDecision.PASS]
+
+
+class ScreeningAnswers(BaseModel):
+    """Truthful application answers derived from CandidateProfile — never fabricated."""
+
+    full_name: str
+    email: str
+    phone: str | None = None
+    linkedin: str | None = None
+    current_city: str
+    current_country: str
+    requires_employer_sponsorship: bool
+    willing_to_relocate_uae: bool
+    notice_period_days: int
+    expected_monthly_aed: float
+    expected_monthly_aed_min: float
+    expected_monthly_aed_max: float
+    years_experience: float
+    current_title: str
+    authorized_to_work_without_sponsorship: bool = False  # always False when sponsorship required
+    answers_map: dict[str, str] = Field(default_factory=dict)
+    truthfulness_attestation: str = (
+        "Answers are derived from candidate.yaml / resume facts; nothing invented."
+    )
+
+
+class ChecklistItem(BaseModel):
+    code: str
+    ok: bool
+    detail: str
+
+
+class PreSubmitChecklist(BaseModel):
+    passed: bool
+    items: list[ChecklistItem] = Field(default_factory=list)
+    blocking_codes: list[str] = Field(default_factory=list)
+
+
+class ApplyAttemptResult(BaseModel):
+    application_key: str
+    channel_id: str
+    outcome: ApplyOutcome
+    status: ApplicationStatus
+    dry_run: bool = False
+    confirmation_verified: bool = False
+    confirmation_reference: str | None = None
+    confirmation_evidence: dict[str, Any] = Field(default_factory=dict)
+    block_reason: str | None = None
+    error: str | None = None
+    screening_answers: ScreeningAnswers | None = None
+    checklist: PreSubmitChecklist | None = None
+    uploaded_files: list[str] = Field(default_factory=list)
+    attempt_number: int = 1
+    submitted_at: datetime | None = None
+    notes: list[str] = Field(default_factory=list)
+    evidence: dict[str, Any] = Field(default_factory=dict)
+
+
+class ApplyStats(BaseModel):
+    candidates: int = 0
+    attempted: int = 0
+    applied: int = 0
+    dry_run: int = 0
+    blocked: int = 0
+    submission_unverified: int = 0
+    skipped_unsupported: int = 0
+    duplicates: int = 0
+    checklist_failed: int = 0
+    errors: int = 0
+
+
+class ApplyReport(BaseModel):
+    run_id: str
+    started_at: datetime
+    finished_at: datetime | None = None
+    dry_run: bool = False
+    live_submission_enabled: bool = False
+    stats: ApplyStats = Field(default_factory=ApplyStats)
+    attempts: list[ApplyAttemptResult] = Field(default_factory=list)
+    recruiter_drafts: list[dict[str, Any]] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+    failures: list[str] = Field(default_factory=list)

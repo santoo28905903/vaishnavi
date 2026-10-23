@@ -137,6 +137,8 @@ def build_daily_report_email(
     dashboard_link: str | None = None,
     discovery_unavailable: bool = False,
     zero_jobs: bool = False,
+    apply_stats: dict[str, Any] | None = None,
+    live_submission_enabled: bool = False,
 ) -> tuple[str, str]:
     """Returns (subject, body). Distinguishes zero jobs vs discovery unavailable."""
     if discovery_unavailable:
@@ -147,7 +149,7 @@ def build_daily_report_email(
         lead = "Discovery ran, but zero verified-fresh UAE AI/ML jobs were selected."
     else:
         subject = "UAE AI Job Autopilot — daily report"
-        lead = "Daily discovery / matching / document preparation summary."
+        lead = "Daily discovery / matching / documents / apply summary."
 
     lines = [
         lead,
@@ -173,7 +175,22 @@ def build_daily_report_email(
         for k, v in document_stats.items():
             lines.append(f"  {k}: {v}")
     lines.append("")
-    lines.append(f"Applications confirmed: 0 (Phase 5 not enabled)")
+    if apply_stats:
+        lines.append("Application outcomes (Phase 5):")
+        lines.append(f"  live_submission_enabled: {live_submission_enabled}")
+        lines.append(f"  Applications confirmed (applied): {apply_stats.get('applied', 0)}")
+        lines.append(f"  submission_unverified: {apply_stats.get('submission_unverified', 0)}")
+        lines.append(f"  blocked (CAPTCHA/MFA/checklist/etc.): {apply_stats.get('blocked', 0)}")
+        lines.append(f"  dry_run: {apply_stats.get('dry_run', 0)}")
+        lines.append(f"  skipped_unsupported: {apply_stats.get('skipped_unsupported', 0)}")
+        lines.append(f"  duplicates: {apply_stats.get('duplicates', 0)}")
+        lines.append(f"  checklist_failed: {apply_stats.get('checklist_failed', 0)}")
+        lines.append(f"  errors: {apply_stats.get('errors', 0)}")
+    else:
+        lines.append(
+            f"Applications confirmed: 0 "
+            f"(apply stage not run; live_submission={live_submission_enabled})"
+        )
     lines.append(f"Model cost (USD): {model_cost_usd}")
     if top_links:
         lines.append("")

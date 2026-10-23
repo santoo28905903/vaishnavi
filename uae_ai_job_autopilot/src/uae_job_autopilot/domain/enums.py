@@ -48,3 +48,30 @@ class VisaEvidenceLabel(StrEnum):
     NEUTRAL = "neutral"
     NEGATIVE = "negative"
     BLOCKER = "blocker"
+
+
+class ApplicationStatus(StrEnum):
+    """Lifecycle status for a tracked application row."""
+
+    PREPARED = "prepared"
+    ATS_FAILED = "ats_failed"
+    REJECTED = "rejected"
+    BLOCKED = "blocked"
+    DRY_RUN = "dry_run"
+    APPLIED = "applied"
+    SUBMISSION_UNVERIFIED = "submission_unverified"
+    SKIPPED_UNSUPPORTED = "skipped_unsupported"
+    DUPLICATE = "duplicate"
+
+
+class ApplyOutcome(StrEnum):
+    """Result of one apply-channel attempt."""
+
+    APPLIED = "applied"
+    DRY_RUN = "dry_run"
+    BLOCKED = "blocked"
+    SUBMISSION_UNVERIFIED = "submission_unverified"
+    SKIPPED_UNSUPPORTED = "skipped_unsupported"
+    DUPLICATE = "duplicate"
+    CHECKLIST_FAILED = "checklist_failed"
+    ERROR = "error"

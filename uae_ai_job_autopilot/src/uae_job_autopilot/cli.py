@@ -69,13 +69,38 @@ def build_parser() -> argparse.ArgumentParser:
 
     daily = sub.add_parser(
         "daily",
-        help="Phase 4: full daily pipeline (discover→evaluate→docs→report) with locks/checkpoints",
+        help="Phase 4–5: discover→evaluate→docs→apply→report with locks/checkpoints",
     )
     daily.add_argument("--dry-run", action="store_true")
     daily.add_argument("--resume-run-id", type=str, default=None)
     daily.add_argument("--skip-lock", action="store_true")
     daily.add_argument("--json", action="store_true")
     daily.add_argument("--summary-only", action="store_true")
+
+    apply_cmd = sub.add_parser(
+        "apply",
+        help="Phase 5: allowlisted apply (mock sandbox by default; real channels gated)",
+    )
+    apply_cmd.add_argument(
+        "--jobs-json",
+        type=str,
+        required=True,
+        help="JSON list of apply candidates {job, resume_pdf, cover_pdf, ats_passed, scenario?}",
+    )
+    apply_cmd.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Never submit; record dry_run outcomes",
+    )
+    apply_cmd.add_argument(
+        "--scenario",
+        type=str,
+        default=None,
+        help="Force mock scenario: success|captcha|mfa|unverified",
+    )
+    apply_cmd.add_argument("--no-sheets", action="store_true")
+    apply_cmd.add_argument("--json", action="store_true")
+    apply_cmd.add_argument("--summary-only", action="store_true")
     return parser
 
 
@@ -363,6 +388,77 @@ def main(argv: list[str] | None = None) -> int:
             console.print(f"[bold]Daily[/bold] {result.run_id} ok={result.ok}")
             console.print(json.dumps(payload, indent=2)[:4000])
         return 0 if result.ok or result.skipped_due_to_lock or args.dry_run else 1
+
+    if args.command == "apply":
+        from uae_job_autopilot.apply.orchestrator import ApplyOrchestrator
+
+        path = Path(args.jobs_json)
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(raw, dict) and "candidates" in raw:
+            candidates = raw["candidates"]
+        elif isinstance(raw, list):
+            candidates = raw
+        else:
+            candidates = [raw]
+        # Ensure mock fixture runs have placeholder PDFs when paths omitted
+        stub_dir = DEFAULT_DATA_DIR / "tmp" / "apply_stubs"
+        stub_dir.mkdir(parents=True, exist_ok=True)
+        stub_resume = stub_dir / "stub_resume.pdf"
+        stub_cover = stub_dir / "stub_cover.pdf"
+        minimal_pdf = b"%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n"
+        if not stub_resume.exists():
+            stub_resume.write_bytes(minimal_pdf)
+        if not stub_cover.exists():
+            stub_cover.write_bytes(minimal_pdf)
+        normalized = []
+        for c in candidates:
+            if not isinstance(c, dict):
+                normalized.append(c)
+                continue
+            item = dict(c)
+            item.setdefault("resume_pdf", str(stub_resume))
+            item.setdefault("cover_pdf", str(stub_cover))
+            item.setdefault("ats_passed", True)
+            normalized.append(item)
+        orch = ApplyOrchestrator(settings=settings)
+        report = orch.run(
+            normalized,
+            dry_run=bool(args.dry_run),
+            sync_sheets=not bool(args.no_sheets),
+            force_scenario=args.scenario,
+        )
+        payload = {
+            "run_id": report.run_id,
+            "stats": report.stats.model_dump(),
+            "live_submission_enabled": report.live_submission_enabled,
+            "attempts": [
+                {
+                    "application_key": a.application_key,
+                    "channel_id": a.channel_id,
+                    "outcome": str(a.outcome),
+                    "status": str(a.status),
+                    "confirmation_verified": a.confirmation_verified,
+                    "confirmation_reference": a.confirmation_reference,
+                    "block_reason": a.block_reason,
+                    "notes": a.notes,
+                }
+                for a in report.attempts
+            ],
+            "notes": report.notes,
+            "failures": report.failures,
+        }
+        if args.summary_only or args.json:
+            print(json.dumps(payload, indent=2))
+        else:
+            console = Console()
+            console.print(f"[bold]Apply[/bold] {report.run_id}")
+            console.print(json.dumps(report.stats.model_dump(), indent=2))
+            for a in report.attempts:
+                console.print(
+                    f"- {a.channel_id} {a.outcome} confirmed={a.confirmation_verified} "
+                    f"{a.block_reason or ''}"
+                )
+        return 0 if not report.failures else 1
 
     return 1
 

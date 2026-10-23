@@ -291,14 +291,14 @@ Status legend: **Planned** = design-ready; **Blocked** = needs credential or aut
 
 ### Phase 5 — Authorized apply
 
-- [ ] Explicit channel allowlist only
-- [ ] Pre-submit checklist (identity, quals, truthful answers, no prior apply, docs valid, method authorized)
-- [ ] Confirmation verification before `applied`
-- [ ] CAPTCHA/MFA/restricted → `blocked` + continue
-- [ ] Duplicate protection + retry history
-- [ ] Optional recruiter outreach **drafts** (not auto-send unless separately authorized)
-- [ ] End-to-end tests on sandbox/allowlisted fixtures only
-- [ ] Update docs; **stop**
+- [x] Explicit channel allowlist only
+- [x] Pre-submit checklist (identity, quals, truthful answers, no prior apply, docs valid, method authorized)
+- [x] Confirmation verification before `applied`
+- [x] CAPTCHA/MFA/restricted → `blocked` + continue
+- [x] Duplicate protection + retry history
+- [x] Optional recruiter outreach **drafts** (not auto-send unless separately authorized)
+- [x] End-to-end tests on sandbox/allowlisted fixtures only
+- [x] Update docs; **stop**
 
 ---
 

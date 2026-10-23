@@ -1,0 +1,79 @@
+# Phase 5 — authorized application channels only.
+# Discovery APIs ≠ apply permission. Unsupported boards must never be faked as submittable.
+#
+# Safety:
+# - mock_sandbox is the only channel enabled by default (controlled tests).
+# - Real ATS channels require enabled + authorized + ENABLE_LIVE_SUBMISSION=true.
+# - CAPTCHA / MFA / restricted flows → status blocked (never applied).
+# - Unconfirmed post-submit outcomes → submission_unverified (never applied).
+
+defaults:
+  require_live_submission_flag: true
+  require_pre_submit_checklist: true
+  max_attempts_per_job: 2
+  continue_on_block: true
+
+channels:
+  mock_sandbox:
+    enabled: true
+    authorized: true  # controlled mock only — not a real employer board
+    method: mock_api
+    description: "In-process mock ATS for Phase 5 safety tests before enabling real channels"
+    url_patterns:
+      - "mock://apply/"
+      - "https://mock.uae-job-autopilot.local/"
+    supports_file_upload: true
+    requires_browser: false
+    requires_live_submission: false  # safe without ENABLE_LIVE_SUBMISSION
+    scenarios_dir: tests/fixtures/apply
+
+  greenhouse_browser:
+    enabled: false
+    authorized: false  # set true only after explicit human authorization
+    method: playwright_browser
+    description: >
+      Permitted Greenhouse *board* form automation via Playwright when authorized.
+      Public boards-api.greenhouse.io is discovery-only — it does not accept applications.
+      Harvest Job Board API submission requires employer credentials we do not claim to have.
+    url_patterns:
+      - "boards.greenhouse.io/"
+      - "job-boards.greenhouse.io/"
+      - "greenhouse.io/embed/job_app"
+    supports_file_upload: true
+    requires_browser: true
+    requires_live_submission: true
+    block_on_captcha: true
+    block_on_mfa: true
+
+  lever_browser:
+    enabled: false
+    authorized: false
+    method: playwright_browser
+    description: >
+      Permitted Lever postings form automation via Playwright when authorized.
+      Public api.lever.co is discovery-only — it does not accept candidate applications.
+    url_patterns:
+      - "jobs.lever.co/"
+      - "lever.co/"
+    supports_file_upload: true
+    requires_browser: true
+    requires_live_submission: true
+    block_on_captcha: true
+    block_on_mfa: true
+
+# Explicitly unsupported for automated submission (honest skip / blocked).
+# Do not add automated submitters for these without a lawful authorized path.
+unsupported_boards:
+  - linkedin_jobs
+  - indeed_uae
+  - bayt
+  - gulftalent
+  - naukrigulf
+  - foundit
+  - michael_page
+  - jsearch  # aggregator discovery only
+  - ashby    # discovery only unless separately allowlisted later
+
+recruiter_outreach:
+  drafts_enabled: true
+  auto_send: false  # never auto-send unless separately authorized

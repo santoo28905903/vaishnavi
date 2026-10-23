@@ -31,7 +31,9 @@ class ApplicationRecord(Base):
     application_url: Mapped[str] = mapped_column(String(1024), nullable=False)
     source: Mapped[str] = mapped_column(String(64), default="")
     source_job_id: Mapped[str] = mapped_column(String(128), default="")
-    status: Mapped[str] = mapped_column(String(64), default="prepared")  # prepared|rejected|blocked
+    status: Mapped[str] = mapped_column(
+        String(64), default="prepared"
+    )  # prepared|rejected|blocked|applied|submission_unverified|dry_run|...
     decision: Mapped[str] = mapped_column(String(64), default="")
     resume_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     visa_score: Mapped[float | None] = mapped_column(Float, nullable=True)
@@ -44,6 +46,18 @@ class ApplicationRecord(Base):
     resume_pdf_path: Mapped[str | None] = mapped_column(String(1024), nullable=True)
     cover_pdf_path: Mapped[str | None] = mapped_column(String(1024), nullable=True)
     rejection_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Phase 5 — submission evidence
+    channel_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    apply_method: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    submitted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    confirmation_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+    confirmation_reference: Mapped[str | None] = mapped_column(String(256), nullable=True)
+    confirmation_evidence_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    screening_answers_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    checklist_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    retry_history_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    block_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
 
@@ -108,7 +122,46 @@ def make_engine(database_url: str):
     return create_engine(database_url, future=True, connect_args=connect_args)
 
 
+def _ensure_sqlite_application_columns(engine) -> None:
+    """
+    create_all does not ALTER existing SQLite tables. Add Phase 5 columns when missing
+    so local DBs created in Phase 3/4 keep working without a manual migration step.
+    Postgres should use Alembic (revision 20261024_0003).
+    """
+    if engine.dialect.name != "sqlite":
+        return
+    from sqlalchemy import inspect, text
+
+    insp = inspect(engine)
+    if "applications" not in insp.get_table_names():
+        return
+    existing = {c["name"] for c in insp.get_columns("applications")}
+    alters: list[str] = []
+    wanted = {
+        "channel_id": "VARCHAR(64)",
+        "apply_method": "VARCHAR(64)",
+        "submitted_at": "DATETIME",
+        "confirmation_verified": "BOOLEAN DEFAULT 0",
+        "confirmation_reference": "VARCHAR(256)",
+        "confirmation_evidence_json": "TEXT",
+        "screening_answers_json": "TEXT",
+        "checklist_json": "TEXT",
+        "retry_history_json": "TEXT",
+        "attempt_count": "INTEGER DEFAULT 0",
+        "block_reason": "TEXT",
+    }
+    for col, ddl in wanted.items():
+        if col not in existing:
+            alters.append(f"ALTER TABLE applications ADD COLUMN {col} {ddl}")
+    if not alters:
+        return
+    with engine.begin() as conn:
+        for stmt in alters:
+            conn.execute(text(stmt))
+
+
 def make_session_factory(database_url: str):
     engine = make_engine(database_url)
     Base.metadata.create_all(engine)
+    _ensure_sqlite_application_columns(engine)
     return sessionmaker(bind=engine, expire_on_commit=False, future=True)

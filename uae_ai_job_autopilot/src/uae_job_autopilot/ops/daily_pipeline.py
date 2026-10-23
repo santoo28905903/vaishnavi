@@ -69,9 +69,12 @@ class DailyPipelineResult:
 class DailyPipeline:
     """
     Cloud-ready daily orchestration:
-    discover → evaluate → prepare_docs → report
+    discover → evaluate → prepare_docs → apply → report
     with DB lock, checkpoints, retries, and cost caps.
-    Never enables live submissions (Phase 5).
+
+    Live ATS submissions require ENABLE_LIVE_SUBMISSION=true AND channel
+    enabled+authorized in application_channels.yaml. Mock sandbox can run
+    without the live flag. CAPTCHA/MFA never bypassed.
     """
 
     def __init__(
@@ -113,9 +116,12 @@ class DailyPipeline:
         result.submission_enabled = bool(self.settings.enable_live_submission)
         if result.submission_enabled:
             result.notes.append(
-                "WARNING: enable_live_submission=true but Phase 5 apply is not implemented; ignored"
+                "ENABLE_LIVE_SUBMISSION=true — real allowlisted channels may submit when authorized"
             )
-            result.submission_enabled = False
+        else:
+            result.notes.append(
+                "ENABLE_LIVE_SUBMISSION=false — real channels forced dry-run; mock_sandbox allowed"
+            )
 
         try:
             db_url = resolve_database_url(self.settings)
@@ -127,7 +133,7 @@ class DailyPipeline:
         except DatabaseConfigError as exc:
             if dry_run:
                 result.notes.append(f"dry_run: DB validation note — {exc}")
-                for stage in ("discover", "evaluate", "prepare_docs", "report"):
+                for stage in ("discover", "evaluate", "prepare_docs", "apply", "report"):
                     result.stages[stage] = {"status": "skipped", "dry_run": True}
                 result.finished_at = utcnow()
                 self._persist_result(result)
@@ -168,9 +174,15 @@ class DailyPipeline:
                 return result
 
         try:
+            stages = [
+                s.strip()
+                for s in (self.settings.pipeline_stages or "").split(",")
+                if s.strip()
+            ] or ["discover", "evaluate", "prepare_docs", "apply", "report"]
+
             if dry_run:
                 result.notes.append("dry_run: stages planned only (no live source/model calls)")
-                for stage in ("discover", "evaluate", "prepare_docs", "report"):
+                for stage in stages:
                     checkpoints.mark(stage, "skipped", payload={"dry_run": True})
                     result.stages[stage] = {"status": "skipped", "dry_run": True}
                 result.finished_at = utcnow()
@@ -187,8 +199,22 @@ class DailyPipeline:
             docs_payload = self._stage_prepare_docs(
                 checkpoints, result, guard, discovery_payload, eval_payload
             )
+            apply_payload: dict[str, Any] = {"stats": {}, "attempts": []}
+            if "apply" in stages:
+                apply_payload = self._stage_apply(
+                    checkpoints, result, docs_payload, eval_payload
+                )
+            else:
+                result.notes.append("apply stage omitted from PIPELINE_STAGES")
+                checkpoints.mark("apply", "skipped", payload={"reason": "not_in_stages"})
+                result.stages["apply"] = {"status": "skipped", "reason": "not_in_stages"}
             self._stage_report(
-                checkpoints, result, discovery_payload, eval_payload, docs_payload
+                checkpoints,
+                result,
+                discovery_payload,
+                eval_payload,
+                docs_payload,
+                apply_payload,
             )
         except CostCapExceeded as exc:
             result.ok = False
@@ -376,6 +402,7 @@ class DailyPipeline:
                         "ats": d.ats.combined_score,
                         "ats_passed": d.ats.passed,
                         "resume_pdf": d.resume_pdf,
+                        "cover_pdf": d.cover_pdf,
                     }
                     for d in report.documents
                 ],
@@ -391,6 +418,97 @@ class DailyPipeline:
             result.ok = False
             return {"stats": {}, "failures": [str(exc)], "documents": []}
 
+    def _stage_apply(
+        self,
+        checkpoints: CheckpointStore,
+        result: DailyPipelineResult,
+        docs_payload: dict[str, Any],
+        eval_payload: dict[str, Any],
+    ) -> dict[str, Any]:
+        if checkpoints.is_done("apply"):
+            result.notes.append("Resumed: apply already done")
+            return checkpoints.load_payload("apply")
+
+        checkpoints.mark("apply", "running")
+        from uae_job_autopilot.apply.orchestrator import ApplyOrchestrator
+        from uae_job_autopilot.documents.generator import application_key
+        from uae_job_autopilot.ops.cloud_db import resolve_database_url
+
+        # Build apply candidates from prepared ATS-pass documents + pass matches
+        docs_by_key = {
+            d.get("job_key"): d for d in (docs_payload.get("documents") or []) if d.get("job_key")
+        }
+        candidates: list[dict[str, Any]] = []
+        for p in eval_payload.get("passes") or []:
+            job = p.get("job") or {}
+            if not job:
+                continue
+            try:
+                posting = JobPosting.model_validate(job)
+            except Exception:  # noqa: BLE001
+                continue
+            key = application_key(posting)
+            doc = docs_by_key.get(key) or {}
+            ats_passed = bool(doc.get("ats_passed", False))
+            # Only attempt apply when ATS passed and docs exist
+            if not ats_passed and doc:
+                continue
+            if not doc:
+                # No generated docs → skip (checklist would fail)
+                continue
+            candidates.append(
+                {
+                    "job": posting,
+                    "application_key": key,
+                    "resume_pdf": doc.get("resume_pdf"),
+                    "cover_pdf": doc.get("cover_pdf"),
+                    "ats_passed": ats_passed,
+                    "status": "prepared" if ats_passed else "ats_failed",
+                }
+            )
+
+        try:
+            settings = self.settings.model_copy(
+                update={"database_url": resolve_database_url(self.settings)}
+            )
+            orch = ApplyOrchestrator(settings=settings, data_dir=self.data_dir)
+            # Pipeline never dry-runs apply here; ENABLE_LIVE_SUBMISSION + channel auth gate live work.
+            # Mock sandbox submits for real confirmation tests; greenhouse/lever stay dry without flags.
+            report = orch.run(candidates, dry_run=False, sync_sheets=True)
+            payload = {
+                "apply_run_id": report.run_id,
+                "stats": report.stats.model_dump(),
+                "live_submission_enabled": report.live_submission_enabled,
+                "attempts": [
+                    {
+                        "application_key": a.application_key,
+                        "channel_id": a.channel_id,
+                        "outcome": str(a.outcome),
+                        "status": str(a.status),
+                        "confirmation_verified": a.confirmation_verified,
+                        "block_reason": a.block_reason,
+                    }
+                    for a in report.attempts
+                ],
+                "notes": report.notes,
+                "failures": report.failures,
+            }
+            checkpoints.mark("apply", "done", payload=payload)
+            result.stages["apply"] = {
+                "status": "done",
+                "stats": payload["stats"],
+                "attempts": len(payload["attempts"]),
+            }
+            result.failures.extend(report.failures)
+            return payload
+        except Exception as exc:  # noqa: BLE001
+            checkpoints.mark("apply", "failed", error=str(exc))
+            result.stages["apply"] = {"status": "failed", "error": str(exc)}
+            result.failures.append(f"apply:{exc}")
+            # Do not fail entire pipeline solely on apply — continue to report
+            result.notes.append(f"apply stage error (continued): {exc}")
+            return {"stats": {}, "attempts": [], "failures": [str(exc)]}
+
     def _stage_report(
         self,
         checkpoints: CheckpointStore,
@@ -398,16 +516,30 @@ class DailyPipeline:
         discovery_payload: dict[str, Any],
         eval_payload: dict[str, Any],
         docs_payload: dict[str, Any],
+        apply_payload: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         if checkpoints.is_done("report"):
             result.notes.append("Resumed: report already done")
             return checkpoints.load_payload("report")
 
         checkpoints.mark("report", "running")
+        apply_payload = apply_payload or {}
         discovery_unavailable = bool(discovery_payload.get("discovery_unavailable"))
         zero_jobs = (discovery_payload.get("stats") or {}).get(
             "jobs_selected_for_evaluation", 0
         ) == 0 and not discovery_unavailable
+
+        top_job_links = []
+        for p in eval_payload.get("passes") or []:
+            job = p.get("job") or {}
+            if job.get("application_url"):
+                top_job_links.append(job["application_url"])
+        if not top_job_links:
+            top_job_links = [
+                d.get("resume_pdf")
+                for d in (docs_payload.get("documents") or [])
+                if d.get("resume_pdf")
+            ][:5]
 
         subject, body = build_daily_report_email(
             discovery_stats=discovery_payload.get("stats"),
@@ -417,35 +549,16 @@ class DailyPipeline:
                 s.get("source") for s in (discovery_payload.get("sources_queried") or [])
             ],
             sources_unavailable=discovery_payload.get("sources_unavailable") or [],
-            top_links=[
-                d.get("resume_pdf") for d in (docs_payload.get("documents") or []) if d.get("resume_pdf")
-            ][:5],
+            top_links=top_job_links[:10],
             model_cost_usd=self.ledger.total_cost_usd,
             failures=result.failures,
             discovery_unavailable=discovery_unavailable,
             zero_jobs=zero_jobs,
+            apply_stats=apply_payload.get("stats"),
+            live_submission_enabled=bool(
+                apply_payload.get("live_submission_enabled", result.submission_enabled)
+            ),
         )
-        # Prefer job application URLs when available
-        top_job_links = []
-        for p in eval_payload.get("passes") or []:
-            job = p.get("job") or {}
-            if job.get("application_url"):
-                top_job_links.append(job["application_url"])
-        if top_job_links:
-            subject, body = build_daily_report_email(
-                discovery_stats=discovery_payload.get("stats"),
-                evaluation_stats=eval_payload.get("stats"),
-                document_stats=docs_payload.get("stats"),
-                sources_queried=[
-                    s.get("source") for s in (discovery_payload.get("sources_queried") or [])
-                ],
-                sources_unavailable=discovery_payload.get("sources_unavailable") or [],
-                top_links=top_job_links[:10],
-                model_cost_usd=self.ledger.total_cost_usd,
-                failures=result.failures,
-                discovery_unavailable=discovery_unavailable,
-                zero_jobs=zero_jobs,
-            )
 
         email_client = build_email_client(self.settings)
         email_result = send_daily_report_with_recovery(

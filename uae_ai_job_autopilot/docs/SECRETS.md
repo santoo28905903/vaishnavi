@@ -1,4 +1,4 @@
-# GitHub Secrets — Phase 4
+# GitHub Secrets — Phases 4–5
 
 Configure repository secrets (Settings → Secrets and variables → Actions).  
 Never commit secret values.
@@ -31,12 +31,22 @@ Never commit secret values.
 | `GMAIL_ENABLED` | `true` to send email |
 | `DAILY_COST_CAP_USD` | Default `2.0` |
 
-## Explicitly disabled
+## Phase 5 — application submission
+
+| Variable | Value / guidance |
+|----------|------------------|
+| `ENABLE_LIVE_SUBMISSION` | Keep `false` until mock_sandbox tests pass. Set `true` only after channels in `config/application_channels.yaml` are `enabled: true` **and** `authorized: true`. |
+| Channel authorization | Not a secret — edit `application_channels.yaml`. Greenhouse/Lever start disabled. |
+| Playwright | Required for authorized browser channels (`playwright install chromium` on the runner). |
+
+Public Greenhouse/Lever discovery APIs do **not** accept applications. Do not add employer Harvest keys unless you intentionally authorize that path.
+
+## Explicitly constrained
 
 | Variable | Value |
 |----------|-------|
-| `ENABLE_LIVE_SUBMISSION` | Must remain `false` (Phase 5 not enabled) |
 | `OLLAMA_ENABLED` | Forced off in cloud / GitHub Actions |
+| Unsupported boards | LinkedIn, Bayt, GulfTalent, NaukriGulf, Indeed UAE, etc. — never automated submit |
 
 ## Workflow
 
