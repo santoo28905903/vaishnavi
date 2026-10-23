@@ -1,19 +1,20 @@
-# Architecture — Phases 1–3
+# Architecture — Phases 1–4
 
 ```text
-CLI: dry-run | discover | evaluate | build-master | prepare-docs
+GitHub Actions (10:00 Asia/Kolkata) / workflow_dispatch
         │
-        ├─ DiscoveryOrchestrator (P1)
-        ├─ MatchingPipeline (P2) — Jev + embeddings + hard rules
-        └─ Phase3Pipeline
-              ├─ MasterResume (verified editable JSON from PDF)
-              ├─ DocumentPipeline
-              │     deterministic tailor (+ optional Groq/Gemini)
-              │     factual integrity gate
-              │     reportlab ATS PDF + reparse ATS score (≥80)
-              ├─ ApplicationRepository (SQLite / Postgres-ready)
-              ├─ SheetsClient (Google or in-memory) — 8 tabs, upsert/replace + recovery
-              └─ EmailClient (Gmail API or in-memory) — daily report + recovery
+        ▼
+uae-jobs daily
+        │
+        ├─ assert persistent DATABASE_URL (no cloud SQLite)
+        ├─ RunLock (DB) + Actions concurrency group
+        ├─ CheckpointStore per stage (resumable)
+        ├─ CostGuard (DAILY_COST_CAP_USD)
+        │
+        ├─ discover  (P1 adapters + source health)
+        ├─ evaluate  (P2 Jev/embeddings; Ollama forced off in cloud)
+        ├─ prepare_docs (P3 PDFs/ATS/DB/Sheets)
+        └─ report (Gmail daily; failures + source health)
 ```
 
-Submission / Playwright apply paths are **Phase 5** and are not present.
+Phase 5 application submission is not wired (`ENABLE_LIVE_SUBMISSION` ignored/false).
