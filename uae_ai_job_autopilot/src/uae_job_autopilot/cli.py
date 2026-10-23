@@ -19,7 +19,7 @@ from uae_job_autopilot.utils.timeutil import utcnow
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="uae-jobs",
-        description="UAE AI Job Autopilot — discovery + matching CLI",
+        description="UAE AI Job Autopilot — discovery + matching + documents CLI",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -53,6 +53,19 @@ def build_parser() -> argparse.ArgumentParser:
     ev.add_argument("--dry-run", action="store_true", help="Do not call models")
     ev.add_argument("--json", action="store_true", help="Print full JSON report")
     ev.add_argument("--summary-only", action="store_true")
+
+    sub.add_parser("build-master", help="Phase 3: build verified editable master resume JSON")
+
+    prep = sub.add_parser(
+        "prepare-docs",
+        help="Phase 3: tailored resume/cover PDFs, ATS score, DB + Sheets sync",
+    )
+    prep.add_argument("--jobs-json", type=str, default=None)
+    prep.add_argument("--from-discovery", type=str, default=None)
+    prep.add_argument("--send-email", action="store_true")
+    prep.add_argument("--no-sheets", action="store_true")
+    prep.add_argument("--json", action="store_true")
+    prep.add_argument("--summary-only", action="store_true")
     return parser
 
 
@@ -237,6 +250,74 @@ def main(argv: list[str] | None = None) -> int:
             print(report.model_dump_json(indent=2))
         else:
             _print_evaluation(report)
+        return 0
+
+    if args.command == "build-master":
+        from uae_job_autopilot.documents.master import build_master_resume
+
+        master = build_master_resume(persist=True)
+        print(
+            json.dumps(
+                {
+                    "full_name": master.full_name,
+                    "skills": master.skills,
+                    "experience_roles": len(master.experience),
+                    "certifications": master.certifications,
+                    "version": master.version,
+                    "path": "data/resume/master_resume.json",
+                },
+                indent=2,
+            )
+        )
+        return 0
+
+    if args.command == "prepare-docs":
+        from uae_job_autopilot.documents.pipeline import Phase3Pipeline
+
+        jobs = _load_jobs_for_eval(args)
+        now = utcnow()
+        for j in jobs:
+            if not j.discovered_at:
+                j.discovered_at = now
+        # Only generate docs for the strong AI fit fixture / non-blocked jobs when using full fixture set
+        # Callers can pass a filtered jobs JSON; default uses representative jobs and prepares all.
+        p3 = Phase3Pipeline(settings=settings)
+        report = p3.prepare_for_jobs(
+            jobs,
+            send_email=bool(args.send_email),
+            sync_sheets=not bool(args.no_sheets),
+        )
+        payload = {
+            "run_id": report.run_id,
+            "stats": report.stats,
+            "failures": report.failures,
+            "documents": [
+                {
+                    "job_key": d.job_key,
+                    "ats": d.ats.combined_score,
+                    "ats_passed": d.ats.passed,
+                    "integrity_ok": d.integrity_ok,
+                    "resume_pdf": d.resume_pdf,
+                    "cover_pdf": d.cover_pdf,
+                    "provider": d.generator_provider,
+                }
+                for d in report.documents
+            ],
+            "email_status": report.stats.get("email_status"),
+            "sheets_ok": report.stats.get("sheets_ok"),
+        }
+        if args.summary_only or args.json:
+            print(json.dumps(payload, indent=2))
+        else:
+            console = Console()
+            console.print(f"[bold]Phase 3[/bold] {report.run_id}")
+            console.print(json.dumps(report.stats, indent=2))
+            for d in report.documents:
+                console.print(
+                    f"- ATS {d.ats.combined_score:.1f} "
+                    f"{'PASS' if d.ats.passed else 'FAIL'} "
+                    f"{d.resume_pdf}"
+                )
         return 0
 
     return 1

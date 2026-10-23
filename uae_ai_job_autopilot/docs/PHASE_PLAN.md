@@ -271,13 +271,13 @@ Status legend: **Planned** = design-ready; **Blocked** = needs credential or aut
 
 ### Phase 3 — Documents, tracking, reporting
 
-- [ ] Tailored ATS PDF resume + cover letter (no fabricated claims)
-- [ ] ATS score: 40% structure + 60% keyword coverage; threshold 80
-- [ ] SQLite schema + Alembic; idempotent application keys
-- [ ] Google Sheets sync for the eight tabs
-- [ ] Gmail daily report template (zero jobs vs discovery unavailable)
-- [ ] Tests for generators, upserts, report content
-- [ ] Update docs; **stop**
+- [x] Tailored ATS PDF resume + cover letter (no fabricated claims)
+- [x] ATS score: 40% structure + 60% keyword coverage; threshold 80
+- [x] SQLite schema + Alembic; idempotent application keys
+- [x] Google Sheets sync for the eight tabs
+- [x] Gmail daily report template (zero jobs vs discovery unavailable)
+- [x] Tests for generators, upserts, report content
+- [x] Update docs; **stop**
 
 ### Phase 4 — Cloud deployment
 

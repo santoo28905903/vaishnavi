@@ -36,6 +36,15 @@ class Settings(BaseSettings):
     ollama_enabled: bool = False
     enable_cloud_generative: bool = False
 
+    # Phase 3 — persistence / Sheets / Gmail
+    database_url: str = "sqlite:///./data/db/uae_jobs.db"
+    google_service_account_json: str | None = None
+    google_sheets_spreadsheet_id: str | None = None
+    gmail_credentials_json: str | None = None
+    report_to_email: str = "vaishnavibatchu28@gmail.com"
+    sheets_enabled: bool = False
+    gmail_enabled: bool = False
+
 
 class ModelsConfig(BaseModel):
     jev_endpoint: str = "https://api.typesafe.ai/v1/systemone"
@@ -48,6 +57,9 @@ class ModelsConfig(BaseModel):
     visa_deterministic_weight: float = 0.50
     visa_jev_weight: float = 0.50
     visa_threshold: float = 70.0
+    ats_structure_weight: float = 0.40
+    ats_keyword_weight: float = 0.60
+    ats_threshold: float = 80.0
     ollama_enabled: bool = False
     ollama_model: str = "qwen2.5:7b-instruct"
     groq_enabled: bool = False
@@ -213,6 +225,9 @@ def load_models_config(config_dir: Path | None = None) -> ModelsConfig:
         visa_deterministic_weight=float(visa.get("deterministic_weight") or 0.50),
         visa_jev_weight=float(visa.get("jev_weight") or 0.50),
         visa_threshold=float(visa.get("threshold") or 70),
+        ats_structure_weight=float((scoring.get("ats") or {}).get("structure_weight") or 0.40),
+        ats_keyword_weight=float((scoring.get("ats") or {}).get("keyword_weight") or 0.60),
+        ats_threshold=float((scoring.get("ats") or {}).get("threshold") or 80),
         ollama_enabled=bool(local.get("enabled", False)),
         ollama_model=str(local.get("model") or "qwen2.5:7b-instruct"),
         groq_enabled=bool(groq.get("enabled", False)),

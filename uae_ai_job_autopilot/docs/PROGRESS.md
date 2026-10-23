@@ -2,65 +2,63 @@
 
 Last updated: 24 Oct 2026, Asia/Kolkata.
 
-## Phase 0 — Repository inspection & plan
+## Phase 0 — Plan
 
 - [x] Complete
 
 ## Phase 1 — Discovery
 
-- [x] Complete (see prior evidence under `docs/evidence/phase1_*`)
+- [x] Complete
 
 ## Phase 2 — Matching & models
 
-- [x] TypeSafe Jev client (`POST /v1/systemone`), pinned `JEV_MODEL`
-- [x] Deterministic hard rules (salary floor, experience gap, nationals-only, no-sponsorship)
-- [x] Sentence Transformers embeddings + disk cache
-- [x] Cloud vs local generative routers (Ollama local-only; Groq/Gemini opt-in)
-- [x] Resume parse from PDF (truthful fields only)
-- [x] Fit score: 40% embedding + 60% Jev rubric; threshold 75
-- [x] Visa: 50% deterministic + 50% Jev; threshold 70; unknown ≠ confirmed
-- [x] Decision/cost/error telemetry + model decision cache
-- [x] Tests with mocked Jev + fixtures; live Jev skipped without `TYPESAFE_API_KEY`
-- [x] Update docs; **stop before Phase 3**
+- [x] Complete
+
+## Phase 3 — Documents, tracking, reporting
+
+- [x] Verified editable master resume from PDF (`data/resume/master_resume.json`)
+- [x] Truthful role-tailored resume + cover letter (deterministic + optional Groq/Gemini)
+- [x] ATS-friendly PDF render + reparse; 40/60 ATS score; threshold **80**
+- [x] Factual integrity checks (reject fabricated employers/degrees/metrics)
+- [x] SQLite persistence + Alembic migration; idempotent `application_key` upserts
+- [x] Google Sheets tabs (Dashboard, Applications, TodayJobs, RejectedJobs, RunHistory, SourceHealth, ModelCosts, RecruiterOutreach) with error recovery
+- [x] Gmail daily report (zero jobs vs discovery unavailable) with send recovery
+- [x] Tests + evidence; **stop before Phase 4 / submission**
 
 ### Implemented modules
 
-- `src/uae_job_autopilot/models/{jev,embeddings,routers,cache,costs}.py`
-- `src/uae_job_autopilot/matching/{resume,hard_rules,visa,scoring,pipeline}.py`
-- CLI: `uae-jobs evaluate`
+- `documents/{master,integrity,pdf_render,ats,generator,pipeline}.py`
+- `db/{tables,repository}.py` + `alembic/`
+- `tracking/sheets.py`
+- `reporting/gmail.py`
+- CLI: `uae-jobs build-master` / `uae-jobs prepare-docs`
 
 ### Test results (executed)
 
 ```text
-19 passed, 5 deselected (-m 'not live') 
-# Full suite with live markers: live Jev skipped without TYPESAFE_API_KEY;
-# Phase 1 live ATS tests pass when network available.
+26 passed, 5 deselected (-m 'not live')
 ```
 
-See `docs/evidence/phase2_pytest.txt`.
+See `docs/evidence/phase3_pytest.txt`.
 
-### Real provider calls
+### External integrations
 
-| Provider | Status |
-|----------|--------|
-| TypeSafe Jev | **Not called in evidence run** — `TYPESAFE_API_KEY` absent. Mocked System One responses covered in unit tests. Live test auto-skips. |
-| Sentence Transformers (`all-MiniLM-L6-v2`) | Loaded locally during `uae-jobs evaluate` evidence run |
-| Ollama / Groq / Gemini | Disabled / no keys — not called |
+| Integration | Evidence run status |
+|-------------|---------------------|
+| Generative (Groq/Gemini/Ollama) | Not enabled — deterministic tailor used; generative path is optional |
+| Google Sheets | In-memory client (no `SHEETS_ENABLED` / credentials) — sync API tested; live Sheets skipped |
+| Gmail | In-memory client — daily report sent in-process; live Gmail skipped without credentials |
+| SQLite | Local DB upserts verified |
 
-### Evaluate evidence (fixtures, no Jev key)
+### Prepare-docs evidence
 
-`docs/evidence/phase2_evaluate_summary.json` / `phase2_evaluate_run.summary.json`
+`docs/evidence/phase3_prepare_summary.json`:
 
-- jobs_input: 6
-- hard_blocked: 4 (nationals-only, no-sponsorship, salary floor, experience gap)
-- match_pass: 0 (Jev rubric unavailable without API key → remaining jobs `needs_model` / fail resume gate)
-- notes honestly state Jev was not configured
-
-With a mocked Jev client in unit tests: `good-rag-1` **PASS**es resume≥75 and visa≥70 with `sponsorship_confirmed=true`; blockers remain authoritative.
-
-## Phase 3 — Documents, DB, Sheets, Gmail
-
-- [ ] Not started — waiting for Phase 3 command
+- documents_generated: 1
+- ats_pass: 1 (score 100)
+- integrity_ok: true
+- email_status: sent (in-memory)
+- sheets_ok: true (in-memory workbook tabs)
 
 ## Phase 4 — GitHub Actions & cloud ops
 

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uae-job-autopilot"
-version = "0.2.0"
-description = "UAE AI Job Autopilot — Phase 1 discovery + Phase 2 matching"
+version = "0.3.0"
+description = "UAE AI Job Autopilot — discovery, matching, documents, Sheets, Gmail"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -19,6 +19,12 @@ dependencies = [
   "pypdf>=4.0",
   "numpy>=1.26",
   "sentence-transformers>=3.0",
+  "SQLAlchemy>=2.0",
+  "alembic>=1.13",
+  "reportlab>=4.0",
+  "gspread>=6.0",
+  "google-auth>=2.0",
+  "google-api-python-client>=2.0",
 ]
 
 [project.optional-dependencies]

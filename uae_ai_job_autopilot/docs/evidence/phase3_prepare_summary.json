@@ -1,0 +1,37 @@
+{
+  "run_id": "20261023T200717Z-p3-0200eea6",
+  "stats": {
+    "jobs_considered": 1,
+    "documents_generated": 1,
+    "ats_pass": 1,
+    "ats_fail": 0,
+    "integrity_fail": 0,
+    "db_upserts": 1,
+    "sheets_ok": true,
+    "email_status": "sent"
+  },
+  "email_status": "sent",
+  "sheets_tabs": {
+    "Dashboard": 1,
+    "Applications": 1,
+    "TodayJobs": 1,
+    "RejectedJobs": 0,
+    "RunHistory": 1,
+    "SourceHealth": 0,
+    "ModelCosts": 0,
+    "RecruiterOutreach": 0
+  },
+  "documents": [
+    {
+      "ats": 100.0,
+      "ats_passed": true,
+      "integrity_ok": true,
+      "provider": "deterministic",
+      "resume_pdf": "/workspace/uae_ai_job_autopilot/data/documents/07afe4199df67adce3c0ace8/r-1.0-20261023T200717Z.pdf",
+      "cover_pdf": "/workspace/uae_ai_job_autopilot/data/documents/07afe4199df67adce3c0ace8/c-1.0-20261023T200717Z.pdf",
+      "structure": 100.0,
+      "keywords": 100.0
+    }
+  ],
+  "email_subject_preview": "UAE AI Job Autopilot \u2014 daily report"
+}

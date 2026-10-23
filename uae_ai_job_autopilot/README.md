@@ -1,18 +1,17 @@
 # UAE AI Job Autopilot
 
-Production-oriented, cost-optimized autonomous system for UAE AI/ML job discovery, eligibility evaluation, document generation, authorized application submission, tracking, and daily reporting.
+Autonomous UAE AI/ML job discovery, matching, document preparation, tracking, and reporting for **Vaishnavi Santoshi Batchu**.
 
-**Candidate (source of truth for facts):** Vaishnavi Santoshi Batchu  
-**Resume (factual source of truth):** [`data/resume/Vaishnavi_Santoshi_Batchu_Resume_ATS.pdf`](data/resume/Vaishnavi_Santoshi_Batchu_Resume_ATS.pdf)
+Resume source of truth: [`data/resume/Vaishnavi_Santoshi_Batchu_Resume_ATS.pdf`](data/resume/Vaishnavi_Santoshi_Batchu_Resume_ATS.pdf)
 
-## Current status
+## Status
 
 | Phase | Scope | Status |
 |-------|--------|--------|
 | 0 | Plan | Complete |
-| 1 | Multi-source discovery | Complete |
-| 2 | Jev + embeddings + visa/resume matching | **Complete** |
-| 3 | Docs, Sheets, Gmail | Not started |
+| 1 | Discovery | Complete |
+| 2 | Jev + embeddings matching | Complete |
+| 3 | Docs, ATS, DB, Sheets, Gmail | **Complete** |
 | 4 | GitHub Actions / cloud ops | Not started |
 | 5 | Authorized auto-apply | Not started |
 
@@ -22,40 +21,29 @@ Production-oriented, cost-optimized autonomous system for UAE AI/ML job discover
 cd uae_ai_job_autopilot
 python3 -m pip install -e '.[dev]'
 
-# Phase 1
 uae-jobs dry-run
 uae-jobs discover --summary-only
-
-# Phase 2 matching (representative fixtures by default)
-export TYPESAFE_API_KEY=...          # required for live Jev decisions
-export JEV_MODEL=jev-1.14.0          # pin in production
 uae-jobs evaluate --summary-only
-uae-jobs evaluate --jobs-json tests/fixtures/jobs/representative_jobs.json
 
-pytest -m 'not live'                 # unit + mocked
-pytest                               # also runs live tests (skip if no keys)
+# Phase 3
+uae-jobs build-master
+uae-jobs prepare-docs --jobs-json tests/fixtures/jobs/representative_jobs.json --summary-only
+# Optional live Sheets/Gmail:
+#   SHEETS_ENABLED=true GOOGLE_SERVICE_ACCOUNT_JSON=... GOOGLE_SHEETS_SPREADSHEET_ID=...
+#   GMAIL_ENABLED=true GMAIL_CREDENTIALS_JSON=... uae-jobs prepare-docs --send-email
+
+pytest -m 'not live'
 ```
 
-## Phase 2 scoring
+## Phase 3 highlights
 
-| Gate | Formula | Threshold |
-|------|---------|-----------|
-| Resume fit | 40% embedding + 60% Jev rubric | **75** |
-| Visa | 50% deterministic + 50% Jev | **70** |
-
-Explicit sponsorship / nationals-only blockers **always override** numeric scores.  
-Unknown sponsorship is never reported as confirmed sponsorship.
-
-## Hard constraints
-
-- No CAPTCHA/MFA bypass, prohibited scraping, fabricated confirmations, or invented resume facts.
-- Cloud must not depend on local Mac Ollama (`OLLAMA_ENABLED` default false).
-- Never claim a source/model was used unless it actually ran.
+- Verified master resume JSON (no invented employers/skills)
+- Tailored ATS PDFs + cover letters; reparsed ATS score **≥ 80** (40% structure + 60% keywords)
+- SQLite + Alembic; idempotent application upserts
+- Sheets workbook tabs + Gmail daily report with failure recovery
+- **No application submission** (Phase 5)
 
 ## Docs
 
-- [`docs/PHASE_PLAN.md`](docs/PHASE_PLAN.md)
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- [`docs/PROGRESS.md`](docs/PROGRESS.md)
-- [`docs/SOURCES.md`](docs/SOURCES.md)
+- [`docs/PHASE_PLAN.md`](docs/PHASE_PLAN.md) · [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · [`docs/PROGRESS.md`](docs/PROGRESS.md)
 - Evidence: [`docs/evidence/`](docs/evidence/)
