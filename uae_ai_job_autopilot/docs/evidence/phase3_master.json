@@ -1,0 +1,33 @@
+{
+  "full_name": "Vaishnavi Santoshi Batchu",
+  "skills": [
+    "Python",
+    "SQL",
+    "LangGraph",
+    "LangChain",
+    "MCP",
+    "RAG",
+    "LLMs",
+    "FastAPI",
+    "Flask",
+    "Docker",
+    "BigQuery",
+    "AWS",
+    "Bedrock",
+    "MLOps",
+    "NLP",
+    "PyTorch",
+    "TensorFlow",
+    "GCP"
+  ],
+  "experience_roles": 3,
+  "certifications": [
+    "Google Cloud \u2013 Professional Machine Learning Engineer",
+    "Google Cloud \u2013 Professional Data Engineer",
+    "Google Cloud \u2013 Associate Cloud Engineer",
+    "Google Cloud \u2013 Generative AI Leader",
+    "AWS Certified Machine Learning \u2013 Specialty"
+  ],
+  "version": "1.0",
+  "path": "data/resume/master_resume.json"
+}
